@@ -54,7 +54,7 @@ interface Order {
 }
 
 export default function Dashboard() {
-  const {orders} = useOrdersStore()
+  const {orders ,fetchOrders} = useOrdersStore()
   const {agencies, fetchAgencies} = useAgencyStore()
   const {vendors, fetchVendors} = useVendorStore()
   const {user, fetchUser} = useUserStore()
@@ -69,8 +69,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchUser()
-  }, [fetchUser])
-
+  }, [fetchUser]) 
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
+console.log(orders)
   return (
       <div className="flex min-h-screen w-full flex-col">
         <Header/>

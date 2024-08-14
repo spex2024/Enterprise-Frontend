@@ -21,7 +21,7 @@ const useAuth = () => {
                 router.push('/'); // or any protected route
             }
         } catch (error) {
-            setError(error.response.data.message);
+            setError(error.response?.data.message);
         }
     };
 

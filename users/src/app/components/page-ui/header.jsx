@@ -31,7 +31,7 @@ function classNames(...classes) {
 export default function Header() {
     const { logout, success, error } = useAuth();
     const router = useRouter();
-    const { user, loading, error: userError } = useUser();
+    const { user, loading, error: userError ,fetchUser } = useUser();
     const orders = user?.orders || [];
     const orderDetails = orders.map(order => ({
         meals: order.meals,

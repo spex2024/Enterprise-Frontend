@@ -51,11 +51,10 @@ const Header: React.FC = () => {
     }, [success, error]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
             fetchUser();
-        }, 200); // Fetch every 5 seconds (5000 milliseconds)
 
-        return () => clearInterval(interval); // Cleanup the interval if the component unmounts
+
+
     }, [fetchUser]);
 
     console.log(user)

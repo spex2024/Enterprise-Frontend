@@ -39,9 +39,10 @@ const useAuth = () => {
 
     const createAgency = async (data) => {
         setError(null);
+        console.log(data)
         try {
             const response = await axios.post(`${baseurl}/api/enterprise/register`, data);
-            console.log(response)
+            console.log(response.data)
             if (response.status===200) {
                 setSuccess(response.data.message);
                 router.push('/login');

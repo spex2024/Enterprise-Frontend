@@ -26,10 +26,10 @@ export const UserProvider = ({ children }) => {
             }
         };
 
-        fetchUser();
+            fetchUser();
+
     }, []);
 
-    console.log(user)
 
     return (
         <UserContext.Provider value={{ user, loading, error }}>
