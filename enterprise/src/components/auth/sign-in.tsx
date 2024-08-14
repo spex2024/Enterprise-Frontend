@@ -65,7 +65,7 @@ const SignIn: React.FC = () => {
                     </form>
                     <div className="mt-7 w-full flex items-start justify-start">
                         <p className="whitespace-nowrap text-gray-600 flex gap-4 w-full items-center">
-                            Don't have an account?
+                            Do not have an account?
                             <Link href={'/sign-up'} className="underline-offset-4 font-semibold text-gray-900 underline">Sign up for free.</Link>
                         </p>
                     </div>
