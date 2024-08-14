@@ -14,7 +14,7 @@ export async function middleware(req) {
 
     // Prevent users with a token from accessing the login or register pages
     if (token && (pathname.startsWith('/login') || pathname.startsWith('/register'))) {
-        return NextResponse.redirect(new URL('https://enterprise-frontend-blush.vercel.app', req.url));
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
     // Allow requests if:
