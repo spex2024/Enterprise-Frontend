@@ -10,7 +10,7 @@ export async function middleware(req) {
 
     // Prevent users with a token from accessing the login or register pages
     if (token && (pathname.startsWith('/login') || pathname.startsWith('/register'))) {
-        return NextResponse.redirect(new URL('/', req.url));
+        return NextResponse.redirect(new URL(' https://enterprise-interface-nine.vercel.app', req.url));
     }
 
     // Allow requests if:
@@ -29,5 +29,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/', '/employees', '/home'], // Apply middleware to the specified pages
+    matcher: ['/', '/employees', ], // Apply middleware to the specified pages
 };
