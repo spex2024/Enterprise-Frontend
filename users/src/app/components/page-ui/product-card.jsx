@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect} from 'react';
 import { Star } from 'lucide-react';
-import useVendorStore from "@/app/provider/vendor/page";
+import useVendorStore from "@/app/provider/vendor/vendor";
 
 
 
