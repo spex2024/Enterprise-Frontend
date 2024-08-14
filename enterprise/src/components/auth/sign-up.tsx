@@ -15,7 +15,7 @@ const schema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters long').nonempty('Password is required'),
     confirmPassword: z.string().min(8, 'Password must be at least 8 characters long').nonempty('Confirm Password is required'),
     phone: z.string().nonempty('Phone number is required'),
-    profilePhoto: z.instanceof(FileList).optional()
+    profilePhoto: z.any().optional(), // Changed to z.any() to handle file input
 }).refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword']
@@ -47,7 +47,7 @@ const SignUp: React.FC = () => {
         formData.append('password', data.password);
         formData.append('confirmPassword', data.confirmPassword);
         formData.append('phone', data.phone);
-        if (data.profilePhoto) {
+        if (data.profilePhoto && data.profilePhoto[0]) {
             formData.append('profilePhoto', data.profilePhoto[0]);
         }
 

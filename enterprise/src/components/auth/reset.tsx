@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -21,7 +21,7 @@ const passwordSchema = z.object({
 
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
-const Reset: React.FC = () => {
+const ResetPasswordForm: React.FC = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<PasswordFormData>({
         resolver: zodResolver(passwordSchema)
     });
@@ -97,6 +97,14 @@ const Reset: React.FC = () => {
             </div>
             <Toaster />
         </div>
+    );
+};
+
+const Reset: React.FC = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
     );
 };
 
