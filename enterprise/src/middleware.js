@@ -1,20 +1,24 @@
 import { NextResponse } from 'next/server';
 import { parse } from 'cookie';
 
-
 export async function middleware(req) {
     // Parse cookies from the request
     const cookies = parse(req.headers.get('cookie') || '');
     const token = cookies['token'];
     const { pathname } = req.nextUrl;
 
+    // Logging for debugging
+    console.log('Middleware triggered');
+    console.log('Pathname:', pathname);
+    console.log('Token:', token);
+
     // Prevent users with a token from accessing the login or register pages
     if (token && (pathname.startsWith('/login') || pathname.startsWith('/register'))) {
-        return NextResponse.redirect(new URL('/', req.url));
+        return NextResponse.redirect(new URL('https://enterprise-frontend-blush.vercel.app', req.url));
     }
 
     // Allow requests if:
-    // - They are for the login product or register product and the token does not exist
+    // - They are for the login or register pages and the token does not exist
     // - The token exists (i.e., the user is authenticated)
     if (pathname.startsWith('/login') || pathname.startsWith('/register') || token) {
         return NextResponse.next();
