@@ -24,9 +24,6 @@ const navigation = [
     { name: 'Return Pack', href: '/return-pack', current: false },
 ]
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function Header() {
     const { logout, success, error } = useAuth();
