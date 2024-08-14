@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,7 @@ import { KeySquare } from "lucide-react";
 import Link from "next/link";
 import useAuth from "@/app/hook/auth";
 import toast, { Toaster } from 'react-hot-toast';
-import {useRouter ,useSearchParams} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const passwordSchema = z.object({
     newPassword: z.string().min(6, "Password must be at least 8 characters long"),
@@ -22,22 +22,21 @@ const Reset = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(passwordSchema)
     });
-    const searchParams = useSearchParams()
-    const {resetPassword , success, error}= useAuth()
+    const searchParams = useSearchParams();
+    const { resetPassword, success, error } = useAuth();
 
     const token = searchParams?.get("token");
+
     useEffect(() => {
         if (success) {
             toast.success(success);
-
         } else if (error) {
             toast.error(error);
         }
     }, [success, error]);
 
     const onSubmit = async data => {
-         await resetPassword(data , token)
-
+        await resetPassword(data, token);
     };
 
     return (
@@ -46,7 +45,7 @@ const Reset = () => {
                 <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
                     <div className="flex-1">
                         <p className="w-full mt-3 text-black text-sm">
-                            Password playing hide and seek? No worries!<br/> Set a new one and get back on track!
+                            Password playing hide and seek? No worries!<br /> Set a new one and get back on track!
                         </p>
 
                         <div className="mt-8">
@@ -93,7 +92,7 @@ const Reset = () => {
                 </div>
                 <div
                     className="hidden bg-cover lg:block lg:w-2/3"
-                    style={{backgroundImage: "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)"}}
+                    style={{ backgroundImage: "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)" }}
                 >
                     <div className="w-full flex flex-row-reverse items-center h-full px-20 bg-gray-900 bg-opacity-40">
                         <div className="w-[70%]" style={{ direction: "rtl" }}>
@@ -110,4 +109,10 @@ const Reset = () => {
     );
 };
 
-export default Reset;
+const ResetWithSuspense = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <Reset />
+    </Suspense>
+);
+
+export default ResetWithSuspense;
