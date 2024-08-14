@@ -19,7 +19,7 @@ const MealList = () => {
     return (
         <div className="w-full">
 
-                {meals.map((meal) => (
+                {meals?.map((meal) => (
 
                     // <div key={meal._id}
                     //      className="w-64 h-64 flex flex-col items-center justify-around shadow-sm bg-white rounded p-4">

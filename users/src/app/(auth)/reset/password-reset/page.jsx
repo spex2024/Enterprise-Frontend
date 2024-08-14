@@ -25,7 +25,7 @@ const Reset = () => {
     const searchParams = useSearchParams()
     const {resetPassword , success, error}= useAuth()
 
-    const token = searchParams.get("token");
+    const token = searchParams?.get("token");
     useEffect(() => {
         if (success) {
             toast.success(success);

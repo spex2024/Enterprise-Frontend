@@ -1,5 +1,5 @@
 // stores/vendorStore.js
-import create from 'zustand';
+import {create} from 'zustand';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:8080';

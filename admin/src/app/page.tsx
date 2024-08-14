@@ -69,7 +69,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchUser()
-  }, [fetchUser]) 
+  }, [fetchUser])
   useEffect(() => {
     fetchOrders()
   }, [fetchOrders])
