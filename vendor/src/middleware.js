@@ -28,5 +28,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/', '/pages/meals', '/pages/add-meal', '/login', '/register'], // Apply middleware to these pages
+    matcher: ['/', '/pages/meals', '/pages/add-meal', '/login'], // Apply middleware to these pages
 };
