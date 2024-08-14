@@ -7,25 +7,21 @@ export async function middleware(req) {
     const token = cookies['token'];
     const { pathname } = req.nextUrl;
 
-    // Log the token and pathname for debugging purposes
-    console.warn('Token:', token);
-    console.warn('Pathname:', pathname);
+    // Protect specific routes
+    const protectedRoutes = ['/', '/user', '/vendor', '/order'];
 
-    // Allow requests if:
-    // - They are for the login page
-    // - The token exists (i.e., the user is authenticated)
-    if (pathname.startsWith('/login') || token) {
-        return NextResponse.next();
+    // Check if the route is protected and if the token exists
+    if (protectedRoutes.some(route => pathname.startsWith(route))) {
+        if (!token) {
+            // Redirect to login if the token is not present
+            return NextResponse.redirect(new URL('/login', req.url));
+        }
     }
 
-    // Redirect to login if the token is not present and the path is not login
-    if (!token && !pathname.startsWith('/login')) {
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
-
+    // Allow all other requests
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/'], // Exclude login page, apply to all others
+    matcher: ['/', '/user/:path*', '/vendor/:path*', '/order/:path*'],
 };
