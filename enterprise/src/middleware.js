@@ -29,5 +29,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: [ ], // Apply middleware to the specified pages
+    matcher: ['/', '/employees', '/home'], // Apply middleware to the specified pages
 };
