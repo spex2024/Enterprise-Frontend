@@ -6,6 +6,7 @@ export async function middleware(req) {
     const cookies = parse(req.headers.get('cookie') || '');
     const token = cookies['token'];
     const { pathname } = req.nextUrl;
+    console.warn(token)
 
     // Allow requests if:
     // - They are for the login page
