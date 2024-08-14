@@ -37,9 +37,6 @@ const FoodProductCard = () => {
                         <div
                             className="w-full flex items-center justify-between rounded-full text-center text-sm cursor-pointer">
                             <p className={`text-xs `}>{meal.vendor.name}({meal.vendor.location})</p>
-                        {/*<p className={`font-bold text-black flex items-center gap-1`}>*/}
-                        {/*        <Star size={20} strokeWidth={0.75} /> <span className={`text-lg`}>5</span>*/}
-                        {/*    </p>*/}
                         </div>
                     </div>
                 </div>
