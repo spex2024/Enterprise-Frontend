@@ -22,13 +22,13 @@ interface MealFormState {
     extras: MealOption[];
 }
 
-interface AddMealFormProps {
+interface UpdateMealFormProps {
     mealId?: string; // ID for editing an existing meal
     mealData?: MealFormState; // Data for the meal to be edited
     onClose: () => void; // Callback to close the form
 }
 
-const UpdateMealForm: React.FC<AddMealFormProps> = ({ mealId, mealData, onClose }) => {
+const UpdateMealForm: React.FC<UpdateMealFormProps> = ({ mealId, mealData, onClose }) => {
     const initialMainMeal: MainMeal = {
         name: '',
         price: ''
