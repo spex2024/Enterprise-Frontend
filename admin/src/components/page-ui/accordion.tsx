@@ -3,13 +3,21 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Minus } from "lucide-react";
 import OrderTable from "@/components/page-ui/order-table";
 
+// Define the Meal type
+interface Meal {
+    main: string;
+    proteinOptions: string[];
+    drinksOptions: string[];
+    stewOptions: string[];
+    comments?: string;
+}
+
 // Define the Order type
 interface Order {
     _id: string;
     orderId: string;
     user: string;
     vendor: { _id: string; name: string; location: string };
-    meals: { mealName: string }[];
     quantity: number;
     status: string;
     totalPrice: number;
@@ -18,15 +26,17 @@ interface Order {
     userName?: string;
 }
 
+interface User {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    orders: Order[];
+}
+
 interface AccordionCardProps {
     name: string;
     location: string;
-    user: {
-        _id: string;
-        firstName: string;
-        lastName: string;
-        orders: Order[];
-    }[];
+    user: any;
     image: string;
 }
 
@@ -34,7 +44,6 @@ export function AccordionCard({ name, location, user, image }: AccordionCardProp
     const [orders, setOrders] = useState<Order[]>([]);
     const [newOrdersCount, setNewOrdersCount] = useState(0);
 
-    // Memoized function to calculate new orders count
     const updateNewOrdersCount = useCallback(() => {
         const pendingOrdersCount = orders.reduce((count, order) =>
                 count + (order.status === 'Pending' ? 1 : 0)
@@ -44,8 +53,7 @@ export function AccordionCard({ name, location, user, image }: AccordionCardProp
     }, [orders]);
 
     useEffect(() => {
-        // Flatten users' orders and update local state
-        const allOrders = user.flatMap(user => user.orders);
+        const allOrders = user.flatMap((user: { orders: any; }) => user.orders);
         setOrders(allOrders);
     }, [user]);
 
@@ -53,7 +61,6 @@ export function AccordionCard({ name, location, user, image }: AccordionCardProp
         updateNewOrdersCount();
     }, [orders, updateNewOrdersCount]);
 
-    // Callback function to update order status
     const handleOrderStatusChange = (updatedOrder: Order) => {
         setOrders(prevOrders => {
             const updatedOrders = prevOrders.map(order =>
