@@ -14,7 +14,7 @@ const Employees = () => {
     console.log(user)
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (!isAuthenticated && !user) {
+            if (!isAuthenticated) {
                 router.push('/login'); // Redirect to login page if not authenticated
             }
         }, 3000); // Adjust the delay as needed
@@ -23,7 +23,7 @@ const Employees = () => {
     }, [isAuthenticated, router]);
 
     // Optionally, you can return a loading indicator while checking authentication
-    if (!isAuthenticated && !user) {
+    if (!isAuthenticated) {
         return null
     }
 

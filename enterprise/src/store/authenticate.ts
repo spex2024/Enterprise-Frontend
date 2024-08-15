@@ -1,40 +1,32 @@
+import { create } from 'zustand';
+import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware';
 
-import {create} from 'zustand';
-
-interface AuthStore {
+// Define the shape of your store state
+interface AuthState {
     isAuthenticated: boolean;
-    setIsAuthenticated: (authState: boolean) => void;
-    checkAuthentication: () => boolean;
+    isLoading: boolean; // Add loading state
+    setIsAuthenticated: (status: boolean) => void;
+    setLoading: (status: boolean) => void; // Add function to set loading state
 }
 
-const EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour in milliseconds
-
-const useAuthStore = create<AuthStore>((set) => ({
-    isAuthenticated: false,
-    setIsAuthenticated: (authState: boolean) => {
-        if (typeof window !== 'undefined') {
-            const now = new Date().getTime();
-            const expirationTime = now + EXPIRATION_TIME;
-            if (authState) {
-                localStorage.setItem('isAuthenticated', 'true');
-                localStorage.setItem('authExpiration', expirationTime.toString());
-            } else {
-                localStorage.removeItem('isAuthenticated');
-                localStorage.removeItem('authExpiration');
-            }
-        }
-        set({ isAuthenticated: authState });
-    },
-    checkAuthentication: () => {
-        if (typeof window === 'undefined') return false; // Server-side check
-        const now = new Date().getTime();
-        const storedExpiration = localStorage.getItem('authExpiration');
-        if (storedExpiration) {
-            const expirationTime = parseInt(storedExpiration, 10);
-            return now < expirationTime;
-        }
-        return false;
-    }
-}));
+// Create the Zustand store with TypeScript types and session storage persistence
+const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
+            isAuthenticated: false,
+            isLoading: true, // Initialize loading as true
+            setIsAuthenticated: (status: boolean) => set({ isAuthenticated: status }),
+            setLoading: (status: boolean) => set({ isLoading: status }), // Set loading state
+        }),
+        {
+            name: 'auth-storage', // Name of the item in session storage (must be unique)
+            storage: createJSONStorage(() => sessionStorage), // Use sessionStorage for persistence
+            onRehydrateStorage: () => {
+                console.log('Rehydrating storage...');
+                // Optionally, you can handle loading state here if needed
+            },
+        } as PersistOptions<AuthState>
+    )
+);
 
 export default useAuthStore;

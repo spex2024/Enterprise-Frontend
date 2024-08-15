@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import {CircleUser, MapPin, Menu, Package2, Search} from 'lucide-react';
+import { CircleUser, MapPin, Menu, Package2, Search } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,15 +19,15 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hook/auth';
 import { useUserStore } from '@/store/profile';
 import Image from 'next/image';
-import {UsersIcon} from "lucide-react";
+import { UsersIcon } from "lucide-react";
 import useAuthStore from "@/store/authenticate";
 
 // Define the type for the user object
 interface User {
     imageUrl?: string;
     company?: string;
-    location?:string;
-    code?:string;
+    location?: string;
+    code?: string;
 }
 
 // Define the type for useUserStore
@@ -40,9 +40,11 @@ interface UserStore {
 const Header: React.FC = () => {
     const { logout, success, error } = useAuth();
     const router = useRouter();
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, isLoading } = useAuthStore();
     const { user, fetchUser } = useUserStore() as UserStore; // Casting to UserStore
-    const { company, imageUrl, location ,code } = user ?? {};
+    const { company, imageUrl, location, code } = user ?? {};
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (success) {
@@ -53,27 +55,21 @@ const Header: React.FC = () => {
     }, [success, error]);
 
     useEffect(() => {
-            fetchUser();
-
+        fetchUser().finally(() => setLoading(false));
     }, [fetchUser]);
 
-    console.log(user)
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            router.push('/login'); // Redirect to login page if not authenticated
+        }
+    }, [isAuthenticated, isLoading, router]);
 
     const handleLogout = async () => {
         await logout();
         router.push('/login'); // Redirect to the login page after logout
     };
-    console.log(isAuthenticated)
-    React.useEffect(() => {
-        if (!isAuthenticated) {
-            router.push('/login'); // Redirect to login page if not authenticated
-        }
-    }, [isAuthenticated, router]);
 
-    // Optionally, you can return a loading indicator or nothing while checking authentication
-    if (!isAuthenticated) {
-        return null // or return null or a spinner
-    }
+   
 
     return (
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -130,7 +126,6 @@ const Header: React.FC = () => {
                 </SheetContent>
             </Sheet>
             <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="secondary" size="icon" className="rounded-full border-2 border-black">
@@ -151,7 +146,7 @@ const Header: React.FC = () => {
                     <DropdownMenuContent align="end" className={`w-52`}>
                         <DropdownMenuLabel className={`w-full flex flex-col gap-2`}>
                             <p>
-                            {company ?? 'No company'} ({code})
+                                {company ?? 'No company'} ({code})
                             </p>
                             <p className={`w-full flex items-center gap-2 font-light`}>
                                 <MapPin size={12} strokeWidth={1}/> {location}
