@@ -17,7 +17,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
                 setSuccess(response.data.message);
-                router.push('/'); // or any protected route
+                router.push('https://main.d1lolo334q00y7.amplifyapp.com'); // or any protected route
             }
         } catch (error) {
             setError(error.response.data.message);
