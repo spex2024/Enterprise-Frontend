@@ -19,7 +19,9 @@ export async function middleware(req) {
         if (!token) {
             console.log('No token found, redirecting to login.');
             // Redirect to login if the token is not present
-            return NextResponse.redirect(new URL('/login', req.url));
+            const loginURL = new URL('/login', req.url);
+            console.log('Redirecting to:', loginURL.href); // Log full redirect URL
+            return NextResponse.redirect(loginURL);
         }
     }
 
