@@ -1,4 +1,4 @@
-import create from 'zustand';
+import {create} from 'zustand';
 
 // Define the shape of your store state
 interface AuthState {

@@ -1,6 +1,5 @@
 
 'use client'
-
 import React from 'react';
 import { useRouter } from 'next/navigation'; // Import useRouter for redirection
 import Dashboard from "@/components/page/dashboard";

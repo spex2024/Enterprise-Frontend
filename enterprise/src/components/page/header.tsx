@@ -20,6 +20,7 @@ import useAuth from '@/hook/auth';
 import { useUserStore } from '@/store/profile';
 import Image from 'next/image';
 import {UsersIcon} from "lucide-react";
+import useAuthStore from "@/store/authenticate";
 
 // Define the type for the user object
 interface User {
@@ -39,6 +40,7 @@ interface UserStore {
 const Header: React.FC = () => {
     const { logout, success, error } = useAuth();
     const router = useRouter();
+    const { isAuthenticated } = useAuthStore();
     const { user, fetchUser } = useUserStore() as UserStore; // Casting to UserStore
     const { company, imageUrl, location ,code } = user ?? {};
 
@@ -63,6 +65,17 @@ const Header: React.FC = () => {
         await logout();
         router.push('/login'); // Redirect to the login page after logout
     };
+    console.log(isAuthenticated)
+    React.useEffect(() => {
+        if (!isAuthenticated) {
+            router.push('/login'); // Redirect to login page if not authenticated
+        }
+    }, [isAuthenticated, router]);
+
+    // Optionally, you can return a loading indicator or nothing while checking authentication
+    if (!isAuthenticated) {
+        return null // or return null or a spinner
+    }
 
     return (
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
