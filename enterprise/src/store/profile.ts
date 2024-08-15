@@ -2,8 +2,8 @@
 import {create} from 'zustand';
 import axios from 'axios';
 
- // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-const baseurl = 'http://localhost:8080';
+ const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+// const baseurl = 'http://localhost:8080';
 
 interface User {
     name: string;
