@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext } from 'react';
 import axios from 'axios';
 
 const CartContext = createContext();
-
+const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -63,7 +63,7 @@ export const CartProvider = ({ children }) => {
 
     const checkout = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/order', cart);
+            const response = await axios.post(`${baseurl}/api/order`, cart);
             console.log('Order submitted:', response.data);
             setCart([]);
             setTotalPrice(0);

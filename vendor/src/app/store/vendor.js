@@ -2,7 +2,7 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-
+const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 const VendorContext = createContext();
 
 export const VendorProvider = ({ children }) => {
@@ -11,7 +11,7 @@ export const VendorProvider = ({ children }) => {
     useEffect(() => {
         const fetchVendor = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/vendor/vendor',{withCredentials: true});
+                const response = await axios.get(`${baseurl}/api/vendor/vendor`,{withCredentials: true});
                 setVendor(response.data);
                 console.log(response.data)
             } catch (error) {
