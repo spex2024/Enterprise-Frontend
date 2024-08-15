@@ -152,7 +152,7 @@ const useAuth = () => {
         cancelOrder,
         success,
         error,
-        auth
+
     };
 };
 
