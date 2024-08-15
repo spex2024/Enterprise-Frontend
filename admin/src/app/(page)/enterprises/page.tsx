@@ -21,10 +21,7 @@ const Enterprise = () => {
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }, [isAuthenticated, router]);
 
-    // Optionally, you can return a loading indicator while checking authentication
-    if (!isAuthenticated) {
-        return null
-    }
+
 
     useEffect(() => {
         fetchAgencies();
