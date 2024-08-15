@@ -52,6 +52,11 @@ const Header: React.FC = () => {
         }
     }, [success, error]);
 
+    useEffect(() => {
+            fetchUser();
+
+    }, [fetchUser]);
+
     console.log(user)
 
     const handleLogout = async () => {
@@ -89,7 +94,7 @@ const Header: React.FC = () => {
                 <Link href={'/orders'} className="text-muted-foreground transition-colors hover:text-foreground">
                     Orders
                 </Link>
-                <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
+                <Link href={'/cookie'} className="text-muted-foreground transition-colors hover:text-foreground">
                     Analytics
                 </Link>
             </nav>
