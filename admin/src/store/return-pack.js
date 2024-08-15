@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8080';
+const baseURL = 'https://enterprise-backend-l6pn.onrender.com'
 
 const useReturnedPacksStore = create((set) => ({
     returnedPacks: [],

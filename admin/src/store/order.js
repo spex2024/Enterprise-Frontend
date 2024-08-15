@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const baseURL = 'http://localhost:8080';
+const baseURL = 'https://enterprise-backend-l6pn.onrender.com';
 
 const useOrdersStore = create((set) => ({
     orders: [],
