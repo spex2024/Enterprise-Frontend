@@ -17,7 +17,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
                 setSuccess(response.data.message);
-                router.push('https://enterprise-interface-taupe.vercel.app/vendors'); // or any protected route
+                router.push('/'); // or any protected route
             }
         } catch (error) {
             setError(error.response.data.message);

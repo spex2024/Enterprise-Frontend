@@ -4,7 +4,7 @@ export function middleware(request) {
     // Extract cookies from the request
     const cookies = request.cookies;
     const token = cookies.get('token'); // Replace 'token' with your actual cookie name
-        console.warn(token)
+     console.log('token', token);
     // Check if the token exists
     if (token) {
         // If token exists, proceed to the requested URL or another URL based on your logic
