@@ -3,27 +3,22 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import useAuthStore from "@/store/authenticate";
-import {useUserStore} from "@/store/profile";
-import {cookies} from "next/headers";
 
 const useAuth = () => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
-    const {  fetchUser } = useUserStore()
     const { setIsAuthenticated } = useAuthStore()
-    const cookieStore = cookies()
     const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
     // const baseurl = 'http://localhost:8080';
 
     const login = async (data) => {
         setError(null);
-        console.log(cookieStore);
         try {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
                 setSuccess(response.data.message);
-                await fetchUser()
+               setIsAuthenticated(true)
                 router.push('/')
             }
         } catch (error) {
