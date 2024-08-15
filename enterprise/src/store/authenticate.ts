@@ -1,24 +1,16 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware';
+import create from 'zustand';
 
-// Define the shape of your store state
-interface AuthState {
+interface AuthStore {
     isAuthenticated: boolean;
-    setIsAuthenticated: (status: boolean) => void;
+    setIsAuthenticated: (authState: boolean) => void;
 }
 
-// Create the Zustand store with TypeScript types and session storage persistence
-const useAuthStore = create<AuthState>()(
-    persist(
-        (set) => ({
-            isAuthenticated: false,
-            setIsAuthenticated: (status: boolean) => set({ isAuthenticated: status }),
-        }),
-        {
-            name: 'auth-storage', // Name of the item in session storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // Use sessionStorage for persistence
-        } as PersistOptions<AuthState> // Explicitly type the options
-    )
-);
+const useAuthStore = create<AuthStore>((set) => ({
+    isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    setIsAuthenticated: (authState) => {
+        set({ isAuthenticated: authState });
+        localStorage.setItem('isAuthenticated', authState.toString());
+    },
+}));
 
 export default useAuthStore;
