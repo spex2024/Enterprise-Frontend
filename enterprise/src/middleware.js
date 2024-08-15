@@ -1,34 +1,21 @@
-import { NextResponse } from 'next/server';
-import { parse } from 'cookie';
+import { NextResponse } from 'next/server'
 
-export async function middleware(req) {
-    // Parse cookies from the request
-    const cookies = parse(req.headers.get('cookie') || '');
-    const token = cookies['token'];
-    const { pathname } = req.nextUrl;
+export function middleware(request) {
+    // Extract cookies from the request
+    const cookies = request.cookies;
+    const token = cookies.get('token'); // Replace 'token' with your actual cookie name
 
-    // Log details to ensure middleware is running and paths are correct
-    console.log('Middleware Path:', pathname);
-    console.log('Token:', token);
-
-    // Protect specific routes
-    const protectedRoutes = ['/', '/employees', '/vendors', '/orders'];
-
-    // Check if the route is protected and if the token exists
-    if (protectedRoutes.some(route => pathname.startsWith(route))) {
-        if (!token) {
-            console.log('No token found, redirecting to login.');
-            // Redirect to login if the token is not present
-            const loginURL = new URL('/login', req.url);
-            console.log('Redirecting to:', loginURL.href); // Log full redirect URL
-            return NextResponse.redirect(loginURL);
-        }
+    // Check if the token exists
+    if (token) {
+        // If token exists, proceed to the requested URL or another URL based on your logic
+        return NextResponse.next(); // Continue to the requested URL
+    } else {
+        // If token does not exist, redirect to the login page or another page
+        return NextResponse.redirect(new URL('/login', request.url));
     }
-
-    // Allow all other requests
-    return NextResponse.next();
 }
 
+// Define the paths where this middleware should apply
 export const config = {
-    matcher: ['/', '/employees/:path*', '/vendors/:path*', '/orders/:path*'],
-};
+    matcher: '/', // Adjust this pattern as needed
+}
