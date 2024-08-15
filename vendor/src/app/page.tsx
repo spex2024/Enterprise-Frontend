@@ -9,6 +9,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Header from "@/components/main/header"
 import { useVendor } from "@/app/store/vendor"
+import useAuthStore from "@/app/store/authenticate";
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 // Define types for the vendor and its associated data
 interface Meal {
@@ -51,6 +54,8 @@ interface Vendor {
 
 export default function Dashboard() {
     const { vendor } = useVendor() as { vendor: Vendor };
+    const { isAuthenticated } = useAuthStore();
+    const router = useRouter();
     const totalSales = vendor.orders?.reduce((total, order) => {
         const orderTotal = order.meals.reduce((orderSum, meal) => orderSum + meal.price, 0);
         return total + orderTotal;
@@ -62,6 +67,22 @@ export default function Dashboard() {
     const recentOrders = orders
         ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!isAuthenticated) {
+                router.push('/login'); // Redirect to login page if not authenticated
+            }
+        }, 1000); // Adjust the delay as needed
+
+        return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+    }, [isAuthenticated, router]);
+
+    // Optionally, you can return a loading indicator while checking authentication
+    if (!isAuthenticated) {
+        return null
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">

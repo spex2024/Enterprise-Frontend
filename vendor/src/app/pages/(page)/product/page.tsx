@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {
     File,
     ListFilter,
@@ -45,6 +45,8 @@ import {
 } from "@/components/ui/tabs";
 import { useVendor } from "@/app/store/vendor";
 import MealDetail from "@/components/main/detail";
+import useAuthStore from "@/app/store/authenticate";
+import {useRouter} from "next/navigation";
 
 type Meal = {
     _id: string;
@@ -82,6 +84,22 @@ export default function Dashboard() {
     const orders: Order[] = vendor?.orders || [];
     const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const { isAuthenticated } = useAuthStore();
+    const router = useRouter();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!isAuthenticated) {
+                router.push('/login'); // Redirect to login page if not authenticated
+            }
+        }, 1000); // Adjust the delay as needed
+
+        return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+    }, [isAuthenticated, router]);
+
+    // Optionally, you can return a loading indicator while checking authentication
+    if (!isAuthenticated) {
+        return null
+    }
 
     const totalPages = Math.ceil(meals.length / ITEMS_PER_PAGE);
 
@@ -116,6 +134,8 @@ export default function Dashboard() {
             day: 'numeric',
         });
     };
+
+
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">

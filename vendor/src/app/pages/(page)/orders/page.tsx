@@ -1,7 +1,9 @@
 'use client'
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useVendor } from "@/app/store/vendor";
 import AgencyAccordion from "@/components/main/agency-accordion";
+import useAuthStore from "@/app/store/authenticate";
+import {useRouter} from "next/navigation";
 
 // Define the types for Agency and Vendor
 interface Agency {
@@ -19,7 +21,22 @@ interface Vendor {
 const Orders: React.FC = () => {
     const { vendor } = useVendor();
     const agencies: Agency[] = vendor?.agencies || [];  // Default to an empty array if vendor is undefined
+    const { isAuthenticated } = useAuthStore();
+    const router = useRouter();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!isAuthenticated) {
+                router.push('/login'); // Redirect to login page if not authenticated
+            }
+        }, 1000); // Adjust the delay as needed
 
+        return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+    }, [isAuthenticated, router]);
+
+    // Optionally, you can return a loading indicator while checking authentication
+    if (!isAuthenticated) {
+        return null
+    }
     return (
         <div className={`w-[80vw] p-5 mx-auto`}>
             <h1 className={`font-bold text-4xl mb-4`}>Orders</h1>
