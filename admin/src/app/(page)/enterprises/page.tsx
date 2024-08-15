@@ -23,11 +23,7 @@ const Enterprise = () => {
 
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <ScaleLoader color={'#000'} />
-            </div>
-        );
+        return null
     }
 
     useEffect(() => {
