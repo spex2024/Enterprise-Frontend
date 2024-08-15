@@ -2,14 +2,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import useAuthStore from "@/store/authenticate";
 
 const useAuth = () => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
-    const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-    // const baseurl = 'http://localhost:8080';
-
+    const { setIsAuthenticated } = useAuthStore()
+    // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+    const baseurl = 'http://localhost:8080';
 
     const login = async (data) => {
         setError(null);
@@ -17,7 +18,8 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
                 setSuccess(response.data.message);
-                router.push('/'); // or any protected route
+               setIsAuthenticated(true)
+                router.push('/')
             }
         } catch (error) {
             setError(error.response.data.message);
