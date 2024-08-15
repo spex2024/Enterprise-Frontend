@@ -18,9 +18,10 @@ import useAuth from "@/app/hook/auth";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useVendor} from "@/app/store/vendor";
+import useAuthStore from "@/app/store/authenticate";
 
 const Header = () => {
-
+    const { isAuthenticated, isLoading } = useAuthStore();
     const {logout , success,error} = useAuth()
     const {vendor} =useVendor()
     const router = useRouter()
@@ -35,6 +36,11 @@ const Header = () => {
         await logout()
         router.push("/login")
     }
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            router.push('/login'); // Redirect to login page if not authenticated
+        }
+    }, [isAuthenticated, isLoading, router]);
 
 
 
