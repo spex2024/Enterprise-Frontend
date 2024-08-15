@@ -33,6 +33,9 @@ import useAgencyStore from "@/store/agency";
 import useVendorStore from "@/store/vendors";
 import useUserStore from "@/store/users";
 import {AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect} from "react";
+import useAuthStore from "@/store/authenticate";
+import {useRouter} from "next/navigation";
+import {ScaleLoader} from "react-spinners";
 
 interface Order {
   _id: string;
@@ -58,7 +61,27 @@ export default function Dashboard() {
   const {agencies, fetchAgencies} = useAgencyStore()
   const {vendors, fetchVendors} = useVendorStore()
   const {user, fetchUser} = useUserStore()
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isAuthenticated) {
+        router.push('/login'); // Redirect to login page if not authenticated
+      }
+    }, 1000); // Adjust the delay as needed
+
+    return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+  }, [isAuthenticated, router]);
+
+  // Optionally, you can return a loading indicator while checking authentication
+  if (!isAuthenticated) {
+    return (
+        <div className="flex items-center justify-center min-h-screen">
+          <ScaleLoader color={'#000'} />
+        </div>
+    );
+  }
   useEffect(() => {
     fetchAgencies()
   }, [fetchAgencies])
@@ -73,7 +96,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchOrders()
   }, [fetchOrders])
-console.log(orders)
+
   return (
       <div className="flex min-h-screen w-full flex-col">
         <Header/>

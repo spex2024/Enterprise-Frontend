@@ -2,11 +2,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import useAuthStore from "@/store/authenticate";
 
 const useAuth = () => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
-    const [auth, setAuth] = useState(false);
+    const { setIsAuthenticated } = useAuthStore()
     const router = useRouter();
     const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 
@@ -16,7 +17,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/admin/login`, data, { withCredentials: true });
             if (response.status === 200) {
                 setSuccess(response.data.message);
-                setAuth(true);
+                setIsAuthenticated(true)
                 router.push('/'); // or any protected route
             }
         } catch (error) {

@@ -52,6 +52,9 @@ import {
 import useReturnedPacksStore from "@/store/return-pack";
 import { useEffect, useState } from "react";
 import useAuth from "@/hook/auth";
+import useAuthStore from "@/store/authenticate";
+import {useRouter} from "next/navigation";
+import {ScaleLoader} from "react-spinners";
 
 interface Pack {
     _id: string;
@@ -66,6 +69,8 @@ const ROWS_PER_PAGE = 10;
 export default function ReturnPackPage() {
     const { returnedPacks, fetchReturnedPacks, updatePackStatus, loading, error } = useReturnedPacksStore();
     const { handlePackRequest, success, error: authError } = useAuth();
+    const { isAuthenticated } = useAuthStore();
+    const router = useRouter();
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [paginatedPacks, setPaginatedPacks] = useState<Pack[]>([]);
@@ -99,6 +104,27 @@ export default function ReturnPackPage() {
             console.error(`Failed to ${action} pack with ID ${id}`, err);
         }
     };
+
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!isAuthenticated) {
+                router.push('/login'); // Redirect to login page if not authenticated
+            }
+        }, 1000); // Adjust the delay as needed
+
+        return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+    }, [isAuthenticated, router]);
+
+    // Optionally, you can return a loading indicator while checking authentication
+    if (!isAuthenticated) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <ScaleLoader color={'#000'} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-gray-100 px-20">

@@ -32,6 +32,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/vendor/logout`, {}, { withCredentials: true });
             if (response.data.success) {
                 setSuccess(response.data.message);
+                setIsAuthenticated(false)
                 router.push('/login'); // or any public route
             }
             setSuccess(response.data.message);
