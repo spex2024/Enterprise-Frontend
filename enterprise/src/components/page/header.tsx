@@ -52,13 +52,6 @@ const Header: React.FC = () => {
         }
     }, [success, error]);
 
-    useEffect(() => {
-            fetchUser();
-
-
-
-    }, [fetchUser]);
-
     console.log(user)
 
     const handleLogout = async () => {
