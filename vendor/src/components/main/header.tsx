@@ -18,12 +18,14 @@ import useAuth from "@/app/hook/auth";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useVendor} from "@/app/store/vendor";
+import useAuthStore from "@/app/store/authenticate";
 
 
 const Header = () => {
     const {logout , success,error} = useAuth()
     const {vendor} =useVendor()
     const router = useRouter()
+    const { isAuthenticated, isLoading } = useAuthStore();
     useEffect(() => {
         if (success) {
             toast.success(success);
@@ -34,6 +36,20 @@ const Header = () => {
     const signOut= async ()=>{
         await logout()
         router.push("/login")
+    }
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            router.push('/login'); // Redirect to login page if not authenticated
+        }
+    }, [isAuthenticated, isLoading, router]);
+
+    const handleLogout = async () => {
+        await logout();
+        router.push('/login'); // Redirect to the login page after logout
+    };
+
+    if (isLoading) {
+        return null; // or return a spinner/loading indicator
     }
 
 

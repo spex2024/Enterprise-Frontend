@@ -69,7 +69,7 @@ const Header: React.FC = () => {
         router.push('/login'); // Redirect to the login page after logout
     };
 
-    if (loading || isLoading) {
+    if (isLoading) {
         return null; // or return a spinner/loading indicator
     }
 

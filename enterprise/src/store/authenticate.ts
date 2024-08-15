@@ -7,6 +7,7 @@ interface AuthState {
     isLoading: boolean; // Add loading state
     setIsAuthenticated: (status: boolean) => void;
     setLoading: (status: boolean) => void; // Add function to set loading state
+    logout: () => void; // Add logout function
 }
 
 // Create the Zustand store with TypeScript types and session storage persistence
@@ -17,6 +18,11 @@ const useAuthStore = create<AuthState>()(
             isLoading: true, // Initialize loading as true
             setIsAuthenticated: (status: boolean) => set({ isAuthenticated: status }),
             setLoading: (status: boolean) => set({ isLoading: status }), // Set loading state
+            logout: () => {
+                set({ isAuthenticated: false }); // Update state
+                // Clear the entire session storage
+                sessionStorage.clear();
+            },
         }),
         {
             name: 'auth-storage', // Name of the item in session storage (must be unique)

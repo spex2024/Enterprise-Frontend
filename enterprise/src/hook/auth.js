@@ -9,10 +9,10 @@ const useAuth = () => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
-    const { setIsAuthenticated } = useAuthStore()
+    const { setIsAuthenticated ,logout: clearAuth} = useAuthStore()
     const {  fetchUser } = useUserStore()
-    const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-    // const baseurl = 'http://localhost:8080';
+    // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+    const baseurl = 'http://localhost:8080';
 
     const login = async (data) => {
         setError(null);
@@ -34,6 +34,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/enterprise/logout`, {}, { withCredentials: true });
             if (response.data.success) {
                 setSuccess(response.data.message);
+                clearAuth()
                 router.push('/login'); // or any public route
             }
             setSuccess(response.data.message);
@@ -50,7 +51,6 @@ const useAuth = () => {
             console.log(response.data)
             if (response.status===200) {
                 setSuccess(response.data.message);
-                setIsAuthenticated(false)
                 router.push('/login');
 
             } else {
