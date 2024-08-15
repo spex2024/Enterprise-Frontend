@@ -11,8 +11,8 @@ const useAuth = () => {
     const router = useRouter();
     const { setIsAuthenticated } = useAuthStore()
     const {  fetchUser } = useUserStore()
-    const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-    // const baseurl = 'http://localhost:8080';
+    // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+    const baseurl = 'http://localhost:8080';
 
     const login = async (data) => {
         setError(null);
@@ -20,6 +20,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
                 setSuccess(response.data.message);
+                setIsAuthenticated(true)
                 router.push('/')
             }
         } catch (error) {
