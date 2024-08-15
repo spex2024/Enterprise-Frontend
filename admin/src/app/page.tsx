@@ -74,14 +74,7 @@ export default function Dashboard() {
     return () => clearTimeout(timer); // Clean up the timer if the component unmounts
   }, [isAuthenticated, router]);
 
-  // Optionally, you can return a loading indicator while checking authentication
-  if (!isAuthenticated) {
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-          <ScaleLoader color={'#000'} />
-        </div>
-    );
-  }
+
   useEffect(() => {
     fetchAgencies()
   }, [fetchAgencies])
@@ -96,7 +89,14 @@ export default function Dashboard() {
   useEffect(() => {
     fetchOrders()
   }, [fetchOrders])
-
+  // Optionally, you can return a loading indicator while checking authentication
+  if (!isAuthenticated) {
+    return (
+        <div className="flex items-center justify-center min-h-screen">
+          <ScaleLoader color={'#000'} />
+        </div>
+    );
+  }
   return (
       <div className="flex min-h-screen w-full flex-col">
         <Header/>

@@ -22,15 +22,15 @@ const Page = () => {
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }, [isAuthenticated, router]);
 
+    useEffect(() => {
+        fetchAgencies();
+    }, [fetchAgencies]);
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {
         return null
     }
 
 
-    useEffect(() => {
-        fetchAgencies();
-    }, [fetchAgencies]);
 
     return (
         <div className="w-[80%] px-5 mx-auto">

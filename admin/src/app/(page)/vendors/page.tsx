@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import useVendorStore from "@/store/vendors";
 import VendorTable from "@/components/page-ui/vendor-table";
-import {ScaleLoader} from "react-spinners";
 import useAuthStore from "@/store/authenticate";
 import {useRouter} from "next/navigation";
 
@@ -20,16 +19,16 @@ const Vendors = () => {
 
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }, [isAuthenticated, router]);
-
+    useEffect(() => {
+        fetchVendors();
+    }, [fetchVendors]);
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {
         return null
     }
 
 
-    useEffect(() => {
-        fetchVendors();
-    }, [fetchVendors]);
+
 
     return (
         <div className="w-[90%] px-5 mx-auto">
