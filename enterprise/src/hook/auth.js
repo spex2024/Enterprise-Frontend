@@ -50,6 +50,7 @@ const useAuth = () => {
             console.log(response.data)
             if (response.status===200) {
                 setSuccess(response.data.message);
+                setIsAuthenticated(false)
                 router.push('/login');
 
             } else {
