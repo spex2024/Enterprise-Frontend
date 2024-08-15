@@ -12,7 +12,7 @@ export async function middleware(req) {
     console.log('Token:', token);
 
     // Protect specific routes
-    const protectedRoutes = ['/', '/user', '/vendor', '/order'];
+    const protectedRoutes = ['/', '/employees', '/vendors', '/orders'];
 
     // Check if the route is protected and if the token exists
     if (protectedRoutes.some(route => pathname.startsWith(route))) {
