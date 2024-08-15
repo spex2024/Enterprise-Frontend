@@ -4,7 +4,10 @@ export function middleware(request) {
     // Extract cookies from the request
     const cookies = request.cookies;
     const token = cookies.get('token'); // Replace 'token' with your actual cookie name
-     console.log('token', token);
+
+    console.log('Received cookies:', cookies);
+    console.log('Token:', token);
+
     // Check if the token exists
     if (token) {
         // If token exists, proceed to the requested URL or another URL based on your logic
@@ -17,5 +20,5 @@ export function middleware(request) {
 
 // Define the paths where this middleware should apply
 export const config = {
-    matcher: '/',
+    matcher: ['/'], // Expand the matcher to include other paths as needed
 }
