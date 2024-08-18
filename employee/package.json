@@ -9,6 +9,8 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@headlessui/react": "^2.1.2",
+		"@heroicons/react": "^2.1.5",
 		"@hookform/resolvers": "^3.9.0",
 		"@nextui-org/button": "2.0.37",
 		"@nextui-org/code": "2.0.32",
