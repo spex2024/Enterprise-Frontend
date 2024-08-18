@@ -13,6 +13,7 @@ const FoodProductCard = () => {
   useEffect(() => {
     fetchMeals();
   }, [fetchMeals]);
+
   console.log(meals);
   useEffect(() => {
     meals?.map((meal) => setMeals(meal.meals));
