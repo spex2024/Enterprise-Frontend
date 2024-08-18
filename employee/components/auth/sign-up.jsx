@@ -5,9 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
 import toast from "react-hot-toast";
+
 import useAuth from "../../app/hook/auth";
-
-
 
 const schema = z
   .object({
@@ -67,7 +66,6 @@ const SignUp = () => {
     formData.append("code", data.code);
     formData.append("phone", data.phone);
     formData.append("profilePhoto", data.profilePhoto[0]);
-    console.log(data.profilePhoto[0]);
 
     try {
       await addUser(formData);
@@ -87,12 +85,12 @@ const SignUp = () => {
     <div className="flex flex-wrap">
       <div className="flex w-full min-h-screen flex-col md:w-1/3">
         <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
-          <a
+          <Link
             className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900"
-            href="#"
+            href={"/"}
           >
             SPEX.
-          </a>
+          </Link>
         </div>
         <div className="mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-4 md:pt-0 mt-20 lg:w-[30rem]">
           <form
@@ -180,6 +178,7 @@ const SignUp = () => {
             </div>
             <div className="flex items-center space-x-6 pt-4">
               <div className="shrink-0">
+                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                 <img
                   alt="Current profile photo"
                   className="h-16 w-16 object-cover rounded-full border-2 border-black"
