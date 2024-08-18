@@ -4,14 +4,13 @@ import axios from "axios";
 const baseurl = "https://enterprise-backend-l6pn.onrender.com";
 // const baseurl = "http://localhost:8080";
 const useMealStore = create((set) => ({
-  meals: [],
+  meal: [],
   error: null,
   fetchMeals: async () => {
     try {
       const response = await axios.get(`${baseurl}/api/vendor/meal`, {
         withCredentials: true,
       });
-      console.log("API Response:", response);
       if (response.data) {
         set({ meals: response.data, error: null });
       } else {
