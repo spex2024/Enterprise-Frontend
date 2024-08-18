@@ -9,6 +9,7 @@ export default function MealCard({meal ,openModal , key}) {
             isFooterBlurred
             radius="lg"
             className="border-none w-full"
+            key={key}
         >
             <Image
                 alt="Woman listing to music"

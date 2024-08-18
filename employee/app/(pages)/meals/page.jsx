@@ -1,11 +1,17 @@
 import React from "react";
 
-const Page = () => {
+import FoodProductCard from "../../../components/page-ui/card";
+import MealModal from "../../../components/page-ui/modal";
+import Cart from "../../../components/page-ui/cart";
+
+const MealList = () => {
   return (
-    <div>
-      
+    <div className={`min-h-screen `}>
+      <FoodProductCard />
+      <MealModal />
+      <Cart />
     </div>
   );
 };
 
-export default Page;
+export default MealList;

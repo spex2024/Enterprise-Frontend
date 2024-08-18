@@ -1,23 +1,26 @@
-'use client';
-import { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const useAuth = () => {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [auth, setAuth] = useState(false);
   const router = useRouter();
-  const baseurl = "http://localhost:8080";
-  // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+  // const baseurl = "http://localhost:8080";
+  const baseurl = "https://enterprise-backend-l6pn.onrender.com";
 
   const login = async (data) => {
     setError(null);
     try {
-      const response = await axios.post(`${baseurl}/api/user/login`, data, { withCredentials: true });
-      if (response.status===200) {
+      const response = await axios.post(`${baseurl}/api/user/login`, data, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
         setSuccess(response.data.message);
-        setAuth(true)
+        setAuth(true);
         router.push("/"); // or any protected route
       }
     } catch (error) {
@@ -28,7 +31,12 @@ const useAuth = () => {
   const logout = async () => {
     setError(null);
     try {
-      const response = await axios.post(`${baseurl}/api/user/logout`, {}, { withCredentials: true });
+      const response = await axios.post(
+        `${baseurl}/api/user/logout`,
+        {},
+        { withCredentials: true },
+      );
+
       if (response.data.success) {
         setSuccess(response.data.message);
         setAuth(false);
@@ -44,11 +52,11 @@ const useAuth = () => {
     setError(null);
     try {
       const response = await axios.post(`${baseurl}/api/user/register`, user);
-      console.log(response)
-      if (response.status===200) {
-        setSuccess(response.data.message);
-        router.push('/login');
 
+      console.log(response);
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        router.push("/login");
       } else {
         setError(response.data.message);
       }
@@ -62,6 +70,7 @@ const useAuth = () => {
     setSuccess(null);
     try {
       const response = await axios.post(`${baseurl}/api/user/request`, user);
+
       if (response.status === 200) {
         setSuccess(response.data.message);
       } else {
@@ -75,7 +84,12 @@ const useAuth = () => {
     setError(null);
     setSuccess(null);
     try {
-      const response = await axios.post(`${baseurl}/api/user/return-pack`, code, {withCredentials:true});
+      const response = await axios.post(
+        `${baseurl}/api/user/return-pack`,
+        code,
+        { withCredentials: true },
+      );
+
       if (response.status === 200) {
         setSuccess(response.data.message);
       } else {
@@ -87,15 +101,15 @@ const useAuth = () => {
   };
 
   const resetPassword = async (user, token) => {
-    const data = {token ,...user}
+    const data = { token, ...user };
+
     setError(null);
     try {
       const response = await axios.post(`${baseurl}/api/user/reset`, data);
 
       if (response.status === 200) {
-        router.push('/login')
+        router.push("/login");
         setSuccess(response.data.message);
-
       } else {
         setError(response.data.message);
       }
@@ -107,16 +121,16 @@ const useAuth = () => {
   const resendVerification = async (data) => {
     try {
       const response = await axios.post(`${baseurl}/api/user/resend`, data);
+
       router.push("/login");
-      setSuccess(response.data.message)
+      setSuccess(response.data.message);
       if (response.status === 400) {
         setError(response.data.message);
       }
-
     } catch (err) {
       setError(err.response ? err.response.data.message : "An error occurred");
     }
-  }
+  };
 
   return {
     login,
@@ -128,7 +142,7 @@ const useAuth = () => {
     returnPack,
     success,
     error,
-    auth
+    auth,
   };
 };
 

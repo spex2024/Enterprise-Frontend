@@ -48,9 +48,7 @@ const Header = () => {
         router.push('/login'); // Redirect to the login page after logout
     };
 
-    if (isLoading) {
-        return null; // or return a spinner/loading indicator
-    }
+
 
 
     return (
