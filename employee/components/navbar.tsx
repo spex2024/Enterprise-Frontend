@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import ProfileAvatar from "@/components/avatar";
+import CartDrawer from "@/components/page-ui/cart-drawer";
 
 export const Navbar = () => {
 
@@ -50,7 +51,7 @@ export const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-
+        <CartDrawer/>
         <ProfileAvatar/>
       </NavbarContent>
 
