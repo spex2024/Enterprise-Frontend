@@ -18,7 +18,7 @@ const FoodProductCard = () => {
   const meals = meal?.meals || [];
   const vendorName = meal?.vendorName || "";
   const vendorLocation = meal?.vendorLocation || "";
-
+ console.log(meal);
   return (
     <div className="w-full grid grid-cols-1 lg:grid-cols-4 justify-center lg:px-10 place-items-center px-5">
       {meals.map((mealItem) => (
