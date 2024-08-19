@@ -5,17 +5,14 @@ import { Toaster } from "react-hot-toast";
 
 import { Providers } from "./store/providers";
 
-import { siteConfig } from "@/config/site";
+
 import { fontSans } from "@/config/fonts";
 
 export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
+  title: "Spex Africa",
+  description: "SPEX (Smart Pack Exchange) is a meal marketplace that leverages a web platform/app to connect food vendors with enterprises and users seeking sustainable food packaging",
   icons: {
-    icon: "/favicon.ico",
+    icon: "https://res.cloudinary.com/ddwet1dzj/image/upload/v1724079914/favicon_l68bd5.ico",
   },
 };
 
