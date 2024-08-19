@@ -28,7 +28,7 @@ const Header: React.FC = () => {
     const { newPacks, fetchReturnedPacks } = useReturnedPacksStore();
     const {user , fetchUser}= useAdminStore()
     const { logout:clear ,isAuthenticated } = useAuthStore();
- 
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
