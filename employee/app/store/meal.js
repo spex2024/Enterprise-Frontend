@@ -11,6 +11,9 @@ const useMealStore = create((set) => ({
       const response = await axios.get(`${baseurl}/api/vendor/meal`, {
         withCredentials: true,
       });
+
+      console.log(response.data)
+
       if (response.data) {
         set({ meal: response.data, error: null });
       } else {
