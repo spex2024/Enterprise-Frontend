@@ -50,17 +50,19 @@ interface Vendor {
     orders?: Order[];
     meals?: Meal[];
     agencies?: Agency[];
-    totalSales:number
+    totalSales:number;
+    completedOrders:number;
+    canceledOrders:number;
 }
 
 export default function Dashboard() {
     const { vendor } = useVendor() as { vendor: Vendor };
     const { isAuthenticated } = useAuthStore();
     const router = useRouter();
-    const totalSales = vendor.orders?.reduce((total, order) => {
-        const orderTotal = order.meals.reduce((orderSum, meal) => orderSum + meal.price, 0);
-        return total + orderTotal;
-    }, 0) || 0;
+    // const totalSales = vendor.orders?.reduce((total, order) => {
+    //     const orderTotal = order.meals.reduce((orderSum, meal) => orderSum + meal.price, 0);
+    //     return total + orderTotal;
+    // }, 0) || 0;
     const agencies: Agency[] = vendor.agencies || [];
     const { orders } = vendor;
       console.log(vendor.orders)
@@ -96,6 +98,22 @@ export default function Dashboard() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{vendor.orders?.length}</div>
+                        </CardContent>
+                    </Card>
+                    <Card x-chunk="dashboard-01-chunk-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Completed Orders</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{vendor.completedOrders}</div>
+                        </CardContent>
+                    </Card>
+                    <Card x-chunk="dashboard-01-chunk-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Cancelled Orders</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{vendor.canceledOrders}</div>
                         </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-1">
