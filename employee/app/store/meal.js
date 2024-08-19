@@ -1,8 +1,8 @@
 // stores/mealStore.js
 import { create } from "zustand";
 import axios from "axios";
-const baseurl = "https://enterprise-backend-l6pn.onrender.com";
-// const baseurl = "http://localhost:8080";
+// const baseurl = "https://enterprise-backend-l6pn.onrender.com";
+const baseurl = "http://localhost:8080";
 const useMealStore = create((set) => ({
   meal: [],
   error: null,
@@ -12,7 +12,7 @@ const useMealStore = create((set) => ({
         withCredentials: true,
       });
 
-      console.log(response.data)
+      console.log(response)
 
       if (response.data) {
         set({ meal: response.data, error: null });

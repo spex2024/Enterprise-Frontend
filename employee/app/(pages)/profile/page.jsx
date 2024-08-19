@@ -1,12 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
-
-
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { ScaleLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
+
+import useAuthStore from "../../store/authenticate";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("profile");
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isAuthenticated) {
+        router.push("/login"); // Redirect to login page if not authenticated
+      }
+    }, 1000); // Adjust the delay as needed
+
+    return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+  }, [isAuthenticated, router]);
+
+  // Optionally, you can return a loading indicator while checking authentication
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <ScaleLoader color={"#000"} />
+      </div>
+    );
+  }
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -93,7 +116,6 @@ export default function App() {
         {activeTab === "profile" && (
           <div className="p-4 rounded-lg w-[60vw]">
             <h1 className="text-2xl font-semibold mb-4">Your Profile</h1>
-
           </div>
         )}
         {activeTab === "dashboard" && (

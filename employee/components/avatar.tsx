@@ -13,10 +13,12 @@ import { useRouter } from "next/navigation";
 
 import useUserStore from "@/app/store/profile";
 import useAuth from "@/app/hook/auth";
+import useAuthStore from "@/app/store/authenticate";
 
 export default function ProfileAvatar() {
   const { user, fetchUser } = useUserStore();
   const { logout, success, error } = useAuth();
+  const { logout:clear } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -31,10 +33,13 @@ export default function ProfileAvatar() {
     }
   }, [success, error]);
 
+
+
   console.log(user)
 
   const handleLogout = async () => {
     await logout();
+    clear()
     router.push("/login"); // Redirect to the login page after logout
   };
 
