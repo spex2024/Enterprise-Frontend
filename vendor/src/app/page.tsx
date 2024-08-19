@@ -12,6 +12,7 @@ import { useVendor } from "@/app/store/vendor"
 import useAuthStore from "@/app/store/authenticate";
 import {useEffect} from "react";
 import {useRouter} from "next/navigation";
+import {ScaleLoader} from "react-spinners";
 
 // Define types for the vendor and its associated data
 interface Meal {
@@ -84,7 +85,11 @@ export default function Dashboard() {
 
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {
-        return null
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <ScaleLoader color={'#000'} />
+            </div>
+        );
     }
 
     return (
