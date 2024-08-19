@@ -30,7 +30,9 @@ export default function ProfileAvatar() {
       toast.error(error);
     }
   }, [success, error]);
+
   console.log(user)
+
   const handleLogout = async () => {
     await logout();
     router.push("/login"); // Redirect to the login page after logout

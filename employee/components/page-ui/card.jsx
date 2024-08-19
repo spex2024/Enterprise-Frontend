@@ -14,6 +14,8 @@ const FoodProductCard = () => {
     fetchMeals();
   }, [fetchMeals]);
 
+  console.log(meals)
+
   const meals = meal.flatMap((item) => item.meals);
 
   return (
