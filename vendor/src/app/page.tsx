@@ -1,22 +1,22 @@
 'use client'
 
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import Header from "@/components/main/header"
-import { useVendor } from "@/app/store/vendor"
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Header from "@/components/main/header";
+import { useVendor } from "@/app/store/vendor";
 import useAuthStore from "@/app/store/authenticate";
-import {useEffect} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 // Define types for the vendor and its associated data
 interface Meal {
     main: string;
-   price : number
+    price: number;
 }
 
 interface User {
@@ -56,18 +56,24 @@ export default function Dashboard() {
     const { vendor } = useVendor() as { vendor: Vendor };
     const { isAuthenticated } = useAuthStore();
     const router = useRouter();
-    const totalSales = vendor.orders?.reduce((total, order) => {
+
+    // Filter completed orders
+    const completedOrders = vendor.orders?.filter(order => order.status === 'Completed') || [];
+
+    // Calculate total sales for completed orders
+    const totalSales = completedOrders.reduce((total, order) => {
         const orderTotal = order.meals.reduce((orderSum, meal) => orderSum + meal.price, 0);
         return total + orderTotal;
-    }, 0) || 0;
+    }, 0);
+
     const agencies: Agency[] = vendor.agencies || [];
     const { orders } = vendor;
-      console.log(vendor.orders)
+
     // Sort orders by createdAt in descending order and limit to the top 5
     const recentOrders = orders
-        ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        ?.filter(order => order.status === 'Completed') // Filter by completed status
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
-
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -81,7 +87,7 @@ export default function Dashboard() {
 
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {
-        return null
+        return null;
     }
 
     return (
@@ -110,7 +116,7 @@ export default function Dashboard() {
                             <CardTitle className="text-sm font-medium">Sales</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">GH₵{totalSales}</div>
+                            <div className="text-2xl font-bold">GH₵{totalSales.toFixed(2)}</div>
                         </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-3">
@@ -206,5 +212,5 @@ export default function Dashboard() {
                 </div>
             </main>
         </div>
-    )
+    );
 }
