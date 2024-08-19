@@ -40,7 +40,7 @@ interface UserStore {
 const Header: React.FC = () => {
     const { logout, success, error } = useAuth();
     const router = useRouter();
-    const { isAuthenticated, isLoading } = useAuthStore();
+    const { isAuthenticated, isLoading, logout:clear } = useAuthStore();
     const { user, fetchUser } = useUserStore() as UserStore; // Casting to UserStore
     const { company, imageUrl, location, code } = user ?? {};
 
@@ -66,6 +66,7 @@ const Header: React.FC = () => {
 
     const handleLogout = async () => {
         await logout();
+        clear()
         router.push('/login'); // Redirect to the login page after logout
     };
 

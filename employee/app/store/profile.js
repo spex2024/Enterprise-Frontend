@@ -7,8 +7,8 @@ const useUserStore = create((set) => ({
   loading: true,
   error: null,
   fetchUser: async () => {
-    // const baseurl = "http://localhost:8080";
-    const baseurl = "https://enterprise-backend-l6pn.onrender.com";
+    const baseurl = "http://localhost:8080";
+    // const baseurl = "https://enterprise-backend-l6pn.onrender.com";
 
     try {
       const response = await axios.get(`${baseurl}/api/user/employee`, {

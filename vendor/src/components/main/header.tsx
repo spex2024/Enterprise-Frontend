@@ -25,7 +25,7 @@ const Header = () => {
     const {logout , success,error} = useAuth()
     const {vendor} =useVendor()
     const router = useRouter()
-    const { isAuthenticated, isLoading } = useAuthStore();
+    const { isAuthenticated, isLoading, logout:clear } = useAuthStore();
     useEffect(() => {
         if (success) {
             toast.success(success);
@@ -33,10 +33,7 @@ const Header = () => {
             toast.error(error);
         }
     }, [success, error]);
-    const signOut= async ()=>{
-        await logout()
-        router.push("/login")
-    }
+
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
             router.push('/login'); // Redirect to login page if not authenticated
@@ -45,6 +42,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         await logout();
+        clear()
         router.push('/login'); // Redirect to the login page after logout
     };
 
@@ -166,7 +164,7 @@ const Header = () => {
                         <DropdownMenuItem>Support</DropdownMenuItem>
                         <DropdownMenuSeparator/>
 
-                        <DropdownMenuItem onClick={signOut}>Logout</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

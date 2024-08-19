@@ -19,6 +19,7 @@ import useAuth from "@/hook/auth";
 import toast from 'react-hot-toast';
 import useReturnedPacksStore from "@/store/return-pack";
 import useAdminStore from "@/store/user";
+import useAuthStore from "@/store/authenticate";
 
 
 const Header: React.FC = () => {
@@ -26,7 +27,7 @@ const Header: React.FC = () => {
     const router = useRouter();
     const { newPacks, fetchReturnedPacks } = useReturnedPacksStore();
     const {user , fetchUser}= useAdminStore()
-
+    const { logout:clear } = useAuthStore();
 
     useEffect(() => {
         fetchReturnedPacks(); // Fetch packs on component mount
@@ -48,6 +49,7 @@ const Header: React.FC = () => {
 
     const handleLogout = async () => {
         await logout();
+        clear()
         router.push('/login'); // Redirect to the login page after logout
     };
 
