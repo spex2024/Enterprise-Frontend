@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/main/header";
 import {MealProvider} from "@/app/store/meal";
 import {SelectedMealProvider} from "@/app/store/select";
 import {CartProvider} from "@/app/store/add-cart";
