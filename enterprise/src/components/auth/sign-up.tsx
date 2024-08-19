@@ -67,7 +67,7 @@ const SignUp: React.FC = () => {
     return (
         <div className="flex flex-wrap">
             <div className="flex w-full min-h-screen flex-col md:w-1/3">
-                <div className="mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-4 md:pt-0 mt-10 lg:w-[30rem]">
+                <div className="mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-4 md:pt-0 mt-5 lg:w-[30rem]">
                     <form className="flex flex-col gap-2 pt-3 md:pt-8" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col pt-4">
                             <input type="text" {...register('company')} className={inputClass} placeholder="Company" />
@@ -101,28 +101,27 @@ const SignUp: React.FC = () => {
                             <div className="shrink-0">
                                 <img
                                     id='preview_img'
-                                    className="h-16 w-16 object-cover rounded-full border-2 border-black"
+                                    className="h-12 w-12 object-cover rounded-full border-2 border-black"
                                     src={profilePhoto && profilePhoto.length ? URL.createObjectURL(profilePhoto[0]) : 'https://res.cloudinary.com/ddwet1dzj/image/upload/v1722177650/spex_logo-03_png_dui5ur.png'}
                                     alt="Current profile photo"
                                 />
                             </div>
                             <label className="block">
-                                <span className="sr-only">Choose profile photo</span>
                                 <input
                                     type="file"
                                     {...register('profilePhoto')}
-                                    className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                                    className="block w-full text-sm text-slate-500 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                                 />
                             </label>
                         </div>
-                        <button type="submit" className="mt-8 w-[50%] bg-gray-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition">Sign Up</button>
-                    </form>
-                    <div className="mt-6 w-full flex items-start justify-start">
+                    <div className="mt-6 w-full flex items-center justify-between text-sm gap-5">
+                        <button type="submit" className=" w-[40%] bg-gray-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition">Sign Up</button>
                         <p className="whitespace-nowrap text-gray-600 flex gap-4 w-full items-center ">
                             Already have an account?
                             <Link href={'/login'} className="underline-offset-4 font-semibold text-gray-900 underline">Sign in.</Link>
                         </p>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
