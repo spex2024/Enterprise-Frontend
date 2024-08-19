@@ -47,7 +47,7 @@ const Header = () => {
     };
 
 
-
+ if (!isAuthenticated) return null;
 
     return (
 
