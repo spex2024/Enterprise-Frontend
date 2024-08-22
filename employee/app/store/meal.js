@@ -12,7 +12,6 @@ const useMealStore = create((set) => ({
         withCredentials: true,
       });
 
-      console.log(response)
 
       if (response.data) {
         set({ meal: response.data, error: null });

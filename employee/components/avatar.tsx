@@ -35,7 +35,6 @@ export default function ProfileAvatar() {
 
 
 
-  console.log(user)
 
   const handleLogout = async () => {
     await logout();

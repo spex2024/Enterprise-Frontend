@@ -29,7 +29,7 @@ const VendorList = () => {
   useEffect(() => {
     fetchVendors();
   }, [fetchVendors]);
-  console.log(vendors);
+
 
   return (
     <div className="w-full h-auto py-10  px-10 grid lg:grid-cols-4 gap-3 place-items-center">

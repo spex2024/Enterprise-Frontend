@@ -121,7 +121,6 @@ export default function Dashboard() {
             .filter(meal => meal.mealId === mealId);
 
         const prices = filteredMeals.map(meal => meal.price);
-        console.log(filteredMeals)
         const total = prices.reduce((acc, price) => acc + price, 0);
         return total;
     };
