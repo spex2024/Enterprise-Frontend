@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import {MealProvider} from "@/app/store/meal";
-import {SelectedMealProvider} from "@/app/store/select";
-import {CartProvider} from "@/app/store/add-cart";
 import {UserProvider} from "@/app/store/agency";
 import {Toaster} from "react-hot-toast";
 import {VendorProvider} from "@/app/store/vendor";
@@ -31,9 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <MealProvider>
-          <SelectedMealProvider>
-              <CartProvider>
+
                 <UserProvider>
                     <VendorProvider>
 
@@ -42,9 +37,7 @@ export default function RootLayout({
                 </UserProvider>
       <Toaster/>
 
-              </CartProvider>
-          </SelectedMealProvider>
-      </MealProvider>
+
       </body>
     </html>
   );
