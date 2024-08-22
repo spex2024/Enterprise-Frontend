@@ -2,7 +2,7 @@
 import create from 'zustand';
 import axios from 'axios';
 
-const baseURL = 'https://enterprise-backend-l6pn.onrender.com';
+const baseURL = 'https://enterprise-backend.vercel.app';
 
 const useAgencyStore = create((set) => ({
     agencies: [],

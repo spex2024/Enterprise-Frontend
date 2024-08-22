@@ -4,7 +4,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 const MealContext = createContext();
-const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+const baseurl = 'https://enterprise-backend.vercel.app';
 
 export const MealProvider = ({ children }) => {
     const [meals, setMeals] = useState([]);
