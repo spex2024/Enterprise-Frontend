@@ -22,7 +22,7 @@ interface AgencyAccordionProps {
 
 const AgencyAccordion: React.FC<AgencyAccordionProps> = ({ agency }) => {
     const { users } = agency;
-    console.log(users);
+
 
     return (
         <Accordion type="single" collapsible className="w-full">
