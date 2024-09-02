@@ -90,7 +90,7 @@ export default function Dashboard() {
     fetchOrders()
   }, [fetchOrders])
   // Optionally, you can return a loading indicator while checking authentication
-  if (!isAuthenticated) {
+  if (!isAuthenticated || user === null ) {
     return (
         <div className="flex items-center justify-center min-h-screen">
           <ScaleLoader color={'#000'} />

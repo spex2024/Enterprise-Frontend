@@ -8,11 +8,16 @@ import Menu from "@/components/page-ui/menu";
 import Cart from "@/components/page-ui/cart";
 import Vendors from "@/components/page-ui/vendors";
 import useAuthStore from "@/app/store/authenticate";
+import useUserStore from "@/app/store/profile";
 
 export default function Home() {
   const { isAuthenticated } = useAuthStore();
   const router = useRouter();
+  const { user, fetchUser } = useUserStore();
 
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!isAuthenticated) {
@@ -24,7 +29,7 @@ export default function Home() {
   }, [isAuthenticated, router]);
 
   // Optionally, you can return a loading indicator while checking authentication
-  if (!isAuthenticated) {
+  if (!isAuthenticated || user === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <ScaleLoader color={"#000"} />

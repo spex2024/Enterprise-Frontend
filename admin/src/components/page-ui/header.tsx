@@ -77,7 +77,7 @@ const Header: React.FC = () => {
     return (
         <header className="z-10 w-full sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
             <nav
-                className="hidden lg:w-[70%] flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+                className="hidden lg:w-[80%] flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 <Link
                     href={'/'}
                     className="flex items-center gap-2 text-lg font-semibold md:text-base"
@@ -92,6 +92,11 @@ const Header: React.FC = () => {
                     Dashboard
                 </Link>
                 <Link
+                    href={'/daily-orders'}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                    Daily Orders
+                </Link> <Link
                     href={'/orders'}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                 >
@@ -151,9 +156,17 @@ const Header: React.FC = () => {
                             Dashboard
                         </Link>
                         <Link
+                            href={'/daily-orders'}
+                            className="text-muted-foreground hover:text-foreground"
+                        >
+
+                            Daily Orders
+                        </Link>
+                        <Link
                             href={'/orders'}
                             className="text-muted-foreground hover:text-foreground"
                         >
+
                             Orders
                         </Link>
                         <Link
@@ -220,3 +233,6 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
+
+
