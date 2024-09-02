@@ -88,7 +88,7 @@ export default function VendorTable({ vendors }: VendorTableProps) {
                                     <TableCell>{vendor.owner}</TableCell>
                                     <TableCell>{vendor.agencies.length}</TableCell>
                                     <TableCell>{vendor.orders.length}</TableCell>
-                                    <TableCell>${vendor.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)}</TableCell>
+                                    <TableCell> GH₵ {vendor.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)}</TableCell>
                                     <TableCell>
                                         <TooltipProvider>
                                             <Tooltip>

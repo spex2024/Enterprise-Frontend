@@ -75,7 +75,7 @@ const returnPack = async (code) => {
         setError(null);
         setSuccess(null);
         try {
-            const response = await axios.post(`${baseurl}/api/user/return-pack`, code, {withCredentials:true});
+            const response = await axios.post(`${baseurl}/api/user/return-packs`, code, {withCredentials:true});
             if (response.status === 200) {
                 setSuccess(response.data.message);
             } else {

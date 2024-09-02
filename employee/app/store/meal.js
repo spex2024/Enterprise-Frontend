@@ -12,18 +12,19 @@ const useMealStore = create((set) => ({
         withCredentials: true,
       });
 
-
       if (response.data) {
         set({ meal: response.data, error: null });
       } else {
         set({ error: "No data received from the server." });
       }
     } catch (error) {
-      console.error("Error fetching meals:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error fetching meals:",
+        error.response ? error.response.data : error.message,
+      );
       set({ error: "Failed to fetch meals. Please try again later." });
     }
   },
 }));
-
 
 export default useMealStore;

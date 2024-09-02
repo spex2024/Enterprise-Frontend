@@ -75,7 +75,7 @@ export function AccordionCard({ name, location, user, image }: AccordionCardProp
             <AccordionItem value={name}>
                 <AccordionTrigger>
                     <div className="flex items-center gap-3">
-                        <img src={image} alt={name} width={50} />
+                        <img src={image} alt={name} width={50}  className={`rounded-full w-12 h-12 border-2 border-black`} />
                         <ul className="flex items-center">
                             <li>{name}</li>
                             <Minus size={20} strokeWidth={1} />

@@ -1,10 +1,11 @@
 
 'use client'
 import {
+    Check, EyeIcon,
     File,
     ListFilter,
     MoreHorizontal,
-    PlusCircle,
+    PlusCircle, X,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -55,12 +56,21 @@ import useAuth from "@/hook/auth";
 import useAuthStore from "@/store/authenticate";
 import {useRouter} from "next/navigation";
 import {ScaleLoader} from "react-spinners";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 interface Pack {
     _id: string;
     code: string;
     status: string;
     createdAt: string;
+    user : {
+        firstName: string,
+        lastName: string,
+        code : string,
+        agency :{
+            company: string,
+        }
+    }
     disabled: Boolean;
 }
 
@@ -207,19 +217,95 @@ export default function ReturnPackPage() {
                                                         {new Date(pack.createdAt).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                                    <MoreHorizontal className="h-4 w-4" />
-                                                                    <span className="sr-only">Toggle menu</span>
-                                                                </Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end">
-                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                                <DropdownMenuItem onClick={() => handleAction(pack._id, 'approve')}>Approve</DropdownMenuItem>
-                                                                <DropdownMenuItem onClick={() => handleAction(pack._id, 'reject')}>Reject</DropdownMenuItem>
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
+                                                        {
+                                                            pack.status === 'Pending'? (
+                                                                <>
+                                                                    <TooltipProvider>
+                                                                        <Tooltip>
+                                                                            <TooltipTrigger asChild>
+                                                                                <Button
+                                                                                    variant="outline"
+                                                                                    size="icon"
+                                                                                    onClick={() => handleAction(pack._id, 'approve')}
+                                                                                >
+                                                                                    <Check className="h-4 w-4" />
+                                                                                </Button>
+                                                                            </TooltipTrigger>
+                                                                            <TooltipContent>
+                                                                                Complete Order
+                                                                            </TooltipContent>
+                                                                        </Tooltip>
+                                                                    </TooltipProvider>
+                                                                    <TooltipProvider>
+                                                                        <Tooltip>
+                                                                            <TooltipTrigger asChild>
+                                                                                <Button
+                                                                                    variant="outline"
+                                                                                    size="icon"
+                                                                                    onClick={() => handleAction(pack._id, 'reject')}
+                                                                                >
+                                                                                    <X className="h-4 w-4" />
+                                                                                </Button>
+                                                                            </TooltipTrigger>
+                                                                            <TooltipContent>
+                                                                                Cancel Order
+                                                                            </TooltipContent>
+                                                                        </Tooltip>
+                                                                    </TooltipProvider>
+                                                                    <TooltipProvider>
+                                                                        <Tooltip>
+                                                                            <TooltipTrigger asChild>
+                                                                                <Button
+                                                                                    variant="ghost"
+                                                                                    size="icon"
+
+                                                                                >
+                                                                                    <EyeIcon className="h-4 w-4" />
+                                                                                </Button>
+                                                                            </TooltipTrigger>
+                                                                            <TooltipContent  className={`w-36 h-36 flex flex-col items-center justify-center bg-white text-black border border-black`}>
+                                                                                <h2 className={`font-bold mb-2`}>Order Details</h2>
+                                                                                    <div className={`w-full  px-3 space-y-2 `}>
+                                                                                        <h1>{pack.code}</h1>
+
+
+
+                                                                                    </div>
+
+                                                                            </TooltipContent>
+                                                                        </Tooltip>
+                                                                    </TooltipProvider>
+                                                                </>
+                                                            ): (
+                                                               <>
+                                                                   <TooltipProvider>
+                                                                       <Tooltip>
+                                                                           <TooltipTrigger asChild>
+                                                                               <Button
+                                                                                   variant="ghost"
+                                                                                   size="icon"
+
+                                                                               >
+                                                                                   <EyeIcon className="h-4 w-4" />
+                                                                               </Button>
+                                                                           </TooltipTrigger>
+                                                                           <TooltipContent  className={`w-72 h-36 flex flex-col items-center justify-center bg-white text-black border border-black`}>
+                                                                               <h2 className={`w-full font-bold mb-2 px-3`}>Pack Details</h2>
+                                                                               <div className={`w-full  px-3 space-y-2 text-xs`}>
+                                                                                   <h1> Code : {pack.code}</h1>
+                                                                                   <h1> User : {`${pack.user.firstName} ${pack.user.lastName}`}</h1>
+                                                                                   <h1> Enterprise: {pack.user.agency.company}</h1>
+
+
+
+                                                                               </div>
+
+                                                                           </TooltipContent>
+                                                                       </Tooltip>
+                                                                   </TooltipProvider>
+                                                               </>
+                                                            )
+                                                        }
                                                     </TableCell>
                                                 </TableRow>
                                             ))}

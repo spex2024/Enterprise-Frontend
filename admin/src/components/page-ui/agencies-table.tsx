@@ -58,13 +58,12 @@ export default function AgencyTable({ agencies }: AgencyTableProps) {
         }, 0);
     };
 
-    console.log(agencies);
 
     return (
         <div className="w-full p-4">
             <Card>
                 <CardHeader>
-                    <CardTitle>Agencies</CardTitle>
+                    <CardTitle>Enterprise</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Table>
@@ -91,7 +90,7 @@ export default function AgencyTable({ agencies }: AgencyTableProps) {
                                             alt={`${agency.company} Logo`}
                                             width={50}
                                             height={50}
-                                            className="rounded-full"
+                                            className={`rounded-full w-12 h-12 border-2 border-black`}
                                         />
                                     </TableCell>
                                     <TableCell>{agency.company}</TableCell>

@@ -63,6 +63,16 @@ const Header: React.FC = () => {
         clear()
         router.push('/login'); // Redirect to the login page after logout
     };
+
+    useEffect(() => {
+        // Set a timeout to automatically log out after 2 minutes (120,000 milliseconds)
+        const logoutTimer = setTimeout(() => {
+            handleLogout();
+        }, 86400000);
+
+        // Clear the timeout if the component unmounts or the user logs out before the timer completes
+        return () => clearTimeout(logoutTimer);
+    }, []);
     if (!isAuthenticated) return null;
     return (
         <header className="z-10 w-full sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">

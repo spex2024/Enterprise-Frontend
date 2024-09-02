@@ -3,6 +3,7 @@
 import React from "react";
 import { Link } from "@nextui-org/react";
 import { PackageCheck, ShoppingBasket, WalletIcon } from "lucide-react";
+import useUserStore from "@/app/store/profile";
 
 const menuItems = [
   {
@@ -20,22 +21,31 @@ const menuItems = [
   {
     icon: <PackageCheck color={`#fff`} size={40} />,
     alt: "Order",
-    text: "Return Pack",
-    link: "/profile",
+    text: "Pack",
+    link: "/return-pack",
+    showNotification: true, // Add this flag to indicate where to show notification
   },
 ];
 
 const Menu = () => {
+  const { user } = useUserStore();
+  const packStatus = user?.pack?.status;
+
   return (
-    <div className="w-full relative  lg:mt-12 lg:mb-10">
-      <div className="w-full  grid lg:grid-cols-3 gap-5 place-items-center  lg:w-full lg:px-96 py-10">
-        {menuItems.slice(0, 3).map((item, index) => (
+    <div className="w-full relative lg:mt-12 lg:mb-10">
+      <div className="w-full grid lg:grid-cols-3 gap-5 place-items-center lg:w-full lg:px-96 py-10">
+        {menuItems.map((item, index) => (
           <Link key={index} href={item.link}>
-            <div className=" flex flex-col items-center  bg-black w-52 py-10 text-center border lg:w-36 h-36 rounded-xl gap-2">
+            <div className="relative flex flex-col items-center bg-black w-52 py-10 text-center border lg:w-36 h-36 rounded-xl gap-2">
               <div>{item.icon}</div>
-              <p className="text-sm font-medium capitalize font-body text-white lg:text-lg md:text-base ">
+              <p className="text-sm font-medium capitalize font-body text-white lg:text-lg md:text-base">
                 {item.text}
               </p>
+              {item.showNotification && packStatus === "active" && (
+                <div className="absolute top-2 right-2 bg-red-500 w-5 h-5 rounded-full flex items-center justify-center">
+                  <p className={`text-xs text-white`}>1</p>
+                </div>
+              )}
             </div>
           </Link>
         ))}

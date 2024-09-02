@@ -1,7 +1,9 @@
 import {create} from 'zustand';
 import axios from 'axios';
 
-const baseURL = 'https://enterprise-backend.vercel.app'
+const baseurl = 'https://enterprise-backend.vercel.app'
+
+// const baseurl = "http://localhost:8080";
 
 const useReturnedPacksStore = create((set) => ({
     returnedPacks: [],
@@ -12,7 +14,7 @@ const useReturnedPacksStore = create((set) => ({
     fetchReturnedPacks: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.get(`${baseURL}/api/admin/return-packs`, { withCredentials: true });
+            const response = await axios.get(`${baseurl}/api/admin/return-packs`, { withCredentials: true });
             set({
                 returnedPacks: response.data.packRequests,
                 newPacks: response.data.packRequests.filter(pack => pack.status === 'Pending').length,  // Update newPacks based on status

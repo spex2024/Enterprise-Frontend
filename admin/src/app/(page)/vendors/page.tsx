@@ -27,6 +27,7 @@ const Vendors = () => {
         return null
     }
 
+    console.log(vendors)
 
 
 

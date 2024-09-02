@@ -3,8 +3,9 @@ import { create } from 'zustand';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const baseURL = 'https://enterprise-backend.vercel.app';
+const baseurl = 'https://enterprise-backend.vercel.app';
 
+// const baseurl = "http://localhost:8080";
 const useOrdersStore = create((set) => ({
     orders: [],
     newOrderCount: 0,
@@ -12,7 +13,7 @@ const useOrdersStore = create((set) => ({
 
     fetchOrders: async () => {
         try {
-            const response = await axios.get(`${baseURL}/api/orders/orders`, { withCredentials: true });
+            const response = await axios.get(`${baseurl}/api/orders/orders`, { withCredentials: true });
             set((state) => {
                 const newOrders = response.data;
                 const existingOrderIds = new Set(state.orders.map(order => order._id));

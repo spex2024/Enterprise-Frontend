@@ -32,7 +32,7 @@ const Enterprise = () => {
             {agencies.length > 0 ? (
                 <AgencyTable agencies={agencies}   />
             ) : (
-                <p>No vendors found.</p>
+                <p>No enterprise found.</p>
             )}
         </div>
     );

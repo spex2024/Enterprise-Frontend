@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { CircleX, MapPin, Phone, Mail } from 'lucide-react';
+import {CircleX, MapPin, Phone, Mail, Building} from 'lucide-react';
 
 interface Order {
     _id: string;
@@ -76,14 +76,14 @@ export default function AgencyDetailsModal({ isOpen, onClose, agency }: AgencyDe
 
                 <div className="w-full p-4 sm:p-10 text-sm flex flex-col justify-between h-1/2">
                     <div className="flex flex-col gap-5">
-                        <h3 id="agency-details-modal-label" className="mb-1 text-xl font-bold text-gray-800 dark:text-neutral-200">
+                        <h3 id="agency-details-modal-label" className="mb-1 text-md font-bold text-gray-800 dark:text-neutral-200">
                             {agency.company} ({agency.code})
                         </h3>
 
-                        <h1 className="font-bold text-xl">Contact</h1>
+                        <h1 className="font-bold text-md">Contact</h1>
                         <div className="w-full grid grid-cols-2 gap-2 text-xs">
                             <div className="flex gap-2">
-                                <MapPin size={20} strokeWidth={1.25} />
+                                <Building size={20} strokeWidth={1.25} />
                                 {agency.branch}
                             </div>
                             <div className="flex gap-3">
@@ -101,7 +101,7 @@ export default function AgencyDetailsModal({ isOpen, onClose, agency }: AgencyDe
                                 <p>{agency.email}</p>
                             </div>
                         </div>
-                        <h1 className="font-bold mt-3 text-xl">Metrics</h1>
+                        <h1 className="font-bold mt-3 text-md">Metrics</h1>
                         <div className="w-full grid grid-cols-3 gap-3 text-xs">
                             <div className="flex gap-1">
                                 <strong>Carbon Points:</strong>

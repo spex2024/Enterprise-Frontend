@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from 'react'
 import Image from 'next/image'
-import { Check, X } from 'lucide-react'
+import {Check, EyeIcon, X} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -10,6 +10,10 @@ import useAuth from "@/hook/auth"
 
 interface Meal {
     main : string;
+    mealId:string;
+    protein:string;
+    sauce:string;
+    extras:string;
 }
 
 interface Vendor {
@@ -30,12 +34,14 @@ interface Order {
     imageUrl: string;
     createdAt: string;
     userName?: string;
+    code : string
 }
 
 interface User {
     _id: string;
     firstName: string;
     lastName: string;
+    code  : string;
     orders: Order[];
 }
 
@@ -52,6 +58,7 @@ export default function OrderTable({ users, onOrderStatusChange }: OrderTablePro
         user.orders.map(order => ({
             ...order,
             userName: `${user.firstName} ${user.lastName}`,
+            code :`${user.code}`
         }))
     ).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
 
@@ -114,6 +121,7 @@ export default function OrderTable({ users, onOrderStatusChange }: OrderTablePro
         }
     };
 
+
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -144,6 +152,7 @@ export default function OrderTable({ users, onOrderStatusChange }: OrderTablePro
                                                 <TableHead>Meals</TableHead>
                                                 <TableHead>Quantity</TableHead>
                                                 <TableHead>Ordered By</TableHead>
+                                                <TableHead>Pack Code</TableHead>
                                                 <TableHead>Status</TableHead>
                                                 <TableHead>Total Price</TableHead>
                                                 <TableHead>Created At</TableHead>
@@ -168,11 +177,12 @@ export default function OrderTable({ users, onOrderStatusChange }: OrderTablePro
                                                     </TableCell>
                                                     <TableCell>{order.quantity}</TableCell>
                                                     <TableCell>{order.userName}</TableCell>
+                                                    <TableCell>{order.code}</TableCell>
                                                     <TableCell>{order.status}</TableCell>
-                                                    <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
+                                                    <TableCell> GH₵{order.totalPrice.toFixed(2)}</TableCell>
                                                     <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                                                     <TableCell className="flex space-x-2">
-                                                        {order.status === 'Pending' && (
+                                                        {order.status === 'Pending'? (
                                                             <>
                                                                 <TooltipProvider>
                                                                     <Tooltip>
@@ -206,8 +216,64 @@ export default function OrderTable({ users, onOrderStatusChange }: OrderTablePro
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
+                                                                <TooltipProvider>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <Button
+                                                                                variant="ghost"
+                                                                                size="icon"
+                                                                                onClick={() => handleCancelOrder(order._id)}
+                                                                            >
+                                                                                <EyeIcon className="h-4 w-4" />
+                                                                            </Button>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent  className={`w-36 h-36 flex flex-col items-center justify-center bg-white text-black border border-black`}>
+                                                                            <h2 className={`font-bold mb-2`}>Order Details</h2>
+                                                                            {order?.meals.map(meal =>(
+                                                                                <div className={`w-full  px-3 space-y-2 `} key={meal.mealId}>
+                                                                                    <h1>{meal.main}</h1>
+                                                                                    <h1>{meal.protein}</h1>
+                                                                                    <h1>{meal.sauce}</h1>
+                                                                                    <h1>{meal.extras}</h1>
+
+
+                                                                                </div>
+                                                                            ))}
+                                                                        </TooltipContent>
+                                                                    </Tooltip>
+                                                                </TooltipProvider>
                                                             </>
-                                                        )}
+                                                        ):(
+                                                            <>
+                                                            <TooltipProvider>
+                                                            <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                            <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() => handleCancelOrder(order._id)}
+                                                    >
+                                                        <EyeIcon className="h-4 w-4" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent  className={`w-32 h-32 flex flex-col items-center justify-center bg-white text-black border border-black`}>
+                                                    <h2 className={`font-bold mb-2`}>Order Details</h2>
+                                                    {order?.meals.map(meal =>(
+                                                        <div className={`w-full  px-3 space-y-2 `} key={meal.mealId}>
+                                                            <h1>{meal.main}</h1>
+                                                            <h1>{meal.protein}</h1>
+                                                            <h1>{meal.sauce}</h1>
+                                                            <h1>{meal.extras}</h1>
+
+
+                                                        </div>
+                                                    ))}
+                                                </TooltipContent>
+                                                </Tooltip>
+                                                </TooltipProvider>
+                                                            </>
+
+                                                            )}
                                                     </TableCell>
                                                 </TableRow>
                                             ))}

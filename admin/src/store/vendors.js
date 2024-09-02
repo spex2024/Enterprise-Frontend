@@ -2,7 +2,9 @@
 import create from 'zustand';
 import axios from 'axios';
 
-const baseURL = 'https://enterprise-backend.vercel.app';
+const baseurl = 'https://enterprise-backend.vercel.app';
+
+// const baseurl = "http://localhost:8080";
 
 const useVendorStore = create((set) => ({
     vendors: [],
@@ -12,7 +14,7 @@ const useVendorStore = create((set) => ({
     fetchVendors: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.get(`${baseURL}/api/admin/vendors`, { withCredentials: true });
+            const response = await axios.get(`${baseurl}/api/admin/vendors`, { withCredentials: true });
             set({ vendors: response.data, loading: false });
         } catch (error) {
             set({ error: error.message, loading: false });
