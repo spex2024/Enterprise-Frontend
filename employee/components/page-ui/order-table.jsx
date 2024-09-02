@@ -18,10 +18,10 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Pagination,
 } from "@nextui-org/react";
+
 import useUserStore from "../../app/store/profile";
-
-
 
 const statusColorMap = {
   active: "success",
@@ -30,22 +30,44 @@ const statusColorMap = {
 };
 
 export default function OrderTable() {
-  const { user, error: userError,fetchUser } = useUserStore();
+  const { user, error: userError, fetchUser } = useUserStore();
 
   useEffect(() => {
-    fetchUser()
+    fetchUser();
   }, []);
+
   const orders = user?.orders || [];
   const [selectedOrder, setSelectedOrder] = useState(null); // State for the selected order
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 10;
 
-  const orderDetails = orders.map((order) => ({
+  // Sort orders by date and time in descending order (most recent first)
+  const sortedOrders = [...orders].sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+
+    return dateB - dateA;
+  });
+
+  // Get current orders after sorting
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Map order details including date and time
+  const orderDetails = currentOrders.map((order) => ({
     meals: order.meals,
     id: order.orderId,
     price: order.totalPrice,
     quantity: order.quantity,
     status: order.status,
     imageUrl: order.imageUrl,
+    date: new Date(order.createdAt).toLocaleDateString(), // Extract date
+    time: new Date(order.createdAt).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }), // Extract time
   }));
 
   const handleViewDetails = (order) => {
@@ -83,17 +105,20 @@ export default function OrderTable() {
               {order.status}
             </Chip>
           );
+        case "date":
+          return order.date;
+        case "time":
+          return order.time;
         case "actions":
           return (
-            <div className="relative flex items-center justify-center gap-5">
+            <div className="relative flex items-center justify-center gap-5 cursor-pointer">
               <Tooltip content="View Details">
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                <div
-                  className="text-lg text-primary cursor-pointer active:opacity-50"
+                <Eye
+                  color={"#000"}
+                  size={22}
+                  strokeWidth={2}
                   onClick={() => handleViewDetails(order)}
-                >
-                  <Eye size={22} strokeWidth={2} />
-                </div>
+                />
               </Tooltip>
             </div>
           );
@@ -116,6 +141,8 @@ export default function OrderTable() {
             { uid: "quantity", name: "Qty" },
             { uid: "status", name: "Status" },
             { uid: "actions", name: "Actions" },
+            { uid: "date", name: "Date" },
+            { uid: "time", name: "Time" }, // Add time column
           ]}
         >
           {(column) => (
@@ -138,6 +165,8 @@ export default function OrderTable() {
                 "quantity",
                 "status",
                 "actions",
+                "date",
+                "time", // Render the time column
               ].map((columnKey) => (
                 <TableCell key={columnKey}>
                   {renderCell(order, columnKey)}
@@ -147,6 +176,17 @@ export default function OrderTable() {
           )}
         </TableBody>
       </Table>
+
+      {/* Pagination Component */}
+      <Pagination
+        isCompact
+        showControls
+        className="mt-4"
+        color="primary"
+        page={currentPage}
+        total={Math.ceil(orders.length / ordersPerPage)}
+        onChange={(page) => setCurrentPage(page)}
+      />
 
       {/* Modal for displaying order details */}
       <Modal
@@ -159,7 +199,7 @@ export default function OrderTable() {
         <ModalContent>
           {() => (
             <>
-              <div className="relative  ">
+              <div className="relative">
                 <ModalHeader className="flex flex-col gap-1 text-white px-6 z-10">
                   <p className={"w-[35%] px-2"}>Order Details</p>
                 </ModalHeader>
@@ -181,8 +221,6 @@ export default function OrderTable() {
                 )}
               </div>
               <ModalBody className="pt-16 mt-10">
-                {" "}
-                {/* Add padding to avoid overlap */}
                 {selectedOrder && (
                   <>
                     <p>
@@ -196,6 +234,12 @@ export default function OrderTable() {
                     </p>
                     <p>
                       <strong>Status:</strong> {selectedOrder.status}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {selectedOrder.date}
+                    </p>
+                    <p>
+                      <strong>Time:</strong> {selectedOrder.time}
                     </p>
                     <div
                       className={`flex flex-col lg:flex-row lg:items-center gap-2`}
@@ -224,8 +268,6 @@ export default function OrderTable() {
           )}
         </ModalContent>
       </Modal>
-
-
     </>
   );
 }

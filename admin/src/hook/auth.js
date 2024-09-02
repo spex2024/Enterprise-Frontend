@@ -7,11 +7,12 @@ import useAuthStore from "@/store/authenticate";
 const useAuth = () => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
-    const { setIsAuthenticated } = useAuthStore()
+    const { setIsAuthenticated } = useAuthStore();
     const router = useRouter();
+    // const baseurl = "http://localhost:8080";
     const baseurl = 'https://enterprise-backend.vercel.app';
 
-    // const baseurl = "http://localhost:8080";
+
 
     const login = async (data) => {
         setError(null);
@@ -19,7 +20,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/admin/login`, data, { withCredentials: true });
             if (response.status === 200) {
                 setSuccess(response.data.message);
-                setIsAuthenticated(true)
+                setIsAuthenticated(true);
                 router.push('/'); // or any protected route
             }
         } catch (error) {
@@ -33,7 +34,7 @@ const useAuth = () => {
             const response = await axios.post(`${baseurl}/api/admin/logout`, {}, { withCredentials: true });
             if (response.data.success) {
                 setSuccess(response.data.message);
-                setAuth(false);
+                setIsAuthenticated(false);
                 router.push('/login'); // or any public route
             }
         } catch (error) {
@@ -117,7 +118,7 @@ const useAuth = () => {
     const completeOrder = async (orderId) => {
         setError(null);
         try {
-            const response = await axios.post(`${baseurl}/api/orders/complete`, { orderId }, {withCredentials:true});
+            const response = await axios.post(`${baseurl}/api/orders/complete`, { orderId }, { withCredentials: true });
             if (response.status === 200) {
                 setSuccess(response.data.message);
             } else {
@@ -131,9 +132,25 @@ const useAuth = () => {
     const cancelOrder = async (orderId) => {
         setError(null);
         try {
-            const response = await axios.post(`${baseurl}/api/orders/cancel`, { orderId },{withCredentials:true});
+            const response = await axios.post(`${baseurl}/api/orders/cancel`, { orderId }, { withCredentials: true });
             if (response.status === 200) {
                 setSuccess(response.data.message);
+            } else {
+                setError(response.data.message);
+            }
+        } catch (error) {
+            setError(error.response.data.message);
+        }
+    };
+
+    // New deleteUser function
+    const deleteUser = async (userId) => {
+        setError(null);
+        try {
+            const response = await axios.delete(`${baseurl}/api/user/employee/${userId}`, { withCredentials: true });
+            if (response.status === 200) {
+                setSuccess(response.data.message);
+                // Optionally redirect or perform additional actions
             } else {
                 setError(response.data.message);
             }
@@ -152,9 +169,9 @@ const useAuth = () => {
         handlePackRequest,
         completeOrder,
         cancelOrder,
+        deleteUser, // Export the new function
         success,
         error,
-
     };
 };
 

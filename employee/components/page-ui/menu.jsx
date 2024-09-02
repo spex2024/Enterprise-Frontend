@@ -16,7 +16,7 @@ const menuItems = [
     icon: <WalletIcon color={`#fff`} size={40} />,
     alt: "Wallet",
     text: "Wallet",
-    link: "/profile",
+    link: "/wallet",
   },
   {
     icon: <PackageCheck color={`#fff`} size={40} />,

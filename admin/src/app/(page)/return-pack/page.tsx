@@ -196,25 +196,25 @@ export default function ReturnPackPage() {
                                         </TableHeader>
                                         <TableBody>
                                             {paginatedPacks.map((pack: Pack) => (
-                                                <TableRow key={pack._id}>
-                                                    <TableCell className="font-medium text-gray-900">{pack.code}</TableCell>
+                                                <TableRow key={pack?._id}>
+                                                    <TableCell className="font-medium text-gray-900">{pack?.code}</TableCell>
                                                     <TableCell>
                                                         <Badge
                                                             className={`bg-transparent border px-3 py-1.5 rounded-full shadow-none ${
-                                                                pack.status === 'Approved'
+                                                                pack?.status === 'Approved'
                                                                     ? 'bg-teal-100 text-teal-800'
-                                                                    : pack.status === 'Pending'
+                                                                    : pack?.status === 'Pending'
                                                                         ? 'bg-yellow-100 text-yellow-800'
-                                                                        : pack.status === 'Rejected'
+                                                                        : pack?.status === 'Rejected'
                                                                             ? 'bg-red-100 text-red-800'
                                                                             : 'text-gray-700'
                                                             }`}
                                                         >
-                                                            {pack.status}
+                                                            {pack?.status}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell className="hidden md:table-cell">
-                                                        {new Date(pack.createdAt).toLocaleString()}
+                                                        {new Date(pack?.createdAt).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell>
                                                         {
@@ -226,7 +226,7 @@ export default function ReturnPackPage() {
                                                                                 <Button
                                                                                     variant="outline"
                                                                                     size="icon"
-                                                                                    onClick={() => handleAction(pack._id, 'approve')}
+                                                                                    onClick={() => handleAction(pack?._id, 'approve')}
                                                                                 >
                                                                                     <Check className="h-4 w-4" />
                                                                                 </Button>
@@ -242,7 +242,7 @@ export default function ReturnPackPage() {
                                                                                 <Button
                                                                                     variant="outline"
                                                                                     size="icon"
-                                                                                    onClick={() => handleAction(pack._id, 'reject')}
+                                                                                    onClick={() => handleAction(pack?._id, 'reject')}
                                                                                 >
                                                                                     <X className="h-4 w-4" />
                                                                                 </Button>
@@ -266,7 +266,7 @@ export default function ReturnPackPage() {
                                                                             <TooltipContent  className={`w-36 h-36 flex flex-col items-center justify-center bg-white text-black border border-black`}>
                                                                                 <h2 className={`font-bold mb-2`}>Order Details</h2>
                                                                                     <div className={`w-full  px-3 space-y-2 `}>
-                                                                                        <h1>{pack.code}</h1>
+                                                                                        <h1>{pack?.code}</h1>
 
 
 
@@ -292,9 +292,9 @@ export default function ReturnPackPage() {
                                                                            <TooltipContent  className={`w-72 h-36 flex flex-col items-center justify-center bg-white text-black border border-black`}>
                                                                                <h2 className={`w-full font-bold mb-2 px-3`}>Pack Details</h2>
                                                                                <div className={`w-full  px-3 space-y-2 text-xs`}>
-                                                                                   <h1> Code : {pack.code}</h1>
-                                                                                   <h1> User : {`${pack.user.firstName} ${pack.user.lastName}`}</h1>
-                                                                                   <h1> Enterprise: {pack.user.agency.company}</h1>
+                                                                                   <h1> Code : {pack?.code}</h1>
+                                                                                   <h1> User : {`${pack?.user?.firstName} ${pack?.user?.lastName}`}</h1>
+                                                                                   <h1> Enterprise: {pack?.user?.agency.company}</h1>
 
 
 

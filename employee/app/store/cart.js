@@ -9,6 +9,7 @@ const useCartStore = create((set, get) => ({
   totalPrice: 0,
   totalQuantity: 0,
   isDrawerOpen: false,
+  isCheckoutSuccess: false, // State for success message
   addToCart: (meal, options) =>
     set((state) => {
       const itemIndex = state.cart.findIndex(
@@ -16,7 +17,7 @@ const useCartStore = create((set, get) => ({
           item.mealId === meal._id &&
           item.protein === options["protein"] &&
           item.sauce === options["sauce"] &&
-          item.extras === options["extras"],
+          item.extras === options["extras"]
       );
 
       if (itemIndex > -1) {
@@ -70,45 +71,10 @@ const useCartStore = create((set, get) => ({
         totalQuantity: newTotalQuantity,
       };
     }),
-  increaseQuantity: (index) =>
-    set((state) => {
-      const updatedCart = [...state.cart];
-
-      updatedCart[index].quantity += 1;
-
-      return {
-        cart: updatedCart,
-        totalPrice: state.totalPrice + updatedCart[index].price,
-        totalQuantity: state.totalQuantity + 1,
-      };
-    }),
-  decreaseQuantity: (index) =>
-    set((state) => {
-      const updatedCart = [...state.cart];
-
-      if (updatedCart[index].quantity > 1) {
-        updatedCart[index].quantity -= 1;
-
-        return {
-          cart: updatedCart,
-          totalPrice: state.totalPrice - updatedCart[index].price,
-          totalQuantity: state.totalQuantity - 1,
-        };
-      } else {
-        updatedCart.splice(index, 1);
-
-        return {
-          cart: updatedCart,
-          totalPrice: state.totalPrice - updatedCart[index].price,
-          totalQuantity: state.totalQuantity - 1,
-        };
-      }
-    }),
   checkout: async () => {
-    const { cart, totalPrice, totalQuantity } = get(); // Use `get` to access state in async functions
+    const { cart, totalPrice, totalQuantity } = get();
 
     try {
-      // Example API request
       const response = await axios.post(
         `${baseurl}/api/orders/order`,
         {
@@ -116,15 +82,33 @@ const useCartStore = create((set, get) => ({
           totalPrice,
           totalQuantity,
         },
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
+      // Check if the response indicates success
+      if (response.status === 201 ) { // Adjust according to your API response
+        console.log("Checkout successful:", response);
 
-      set({ cart: [], totalPrice: 0, totalQuantity: 0, isDrawerOpen: false });
+        set({
+          cart: [],
+          totalPrice: 0,
+          totalQuantity: 0,
+          isCheckoutSuccess: true, // Set success message state to true on successful checkout
+          isDrawerOpen: false,
+        });
+
+        setTimeout(() => set({ isCheckoutSuccess: false }), 25000);
+      } else {
+        console.error("Checkout failed:", response);
+        // Optionally handle failure case here
+      }
+
     } catch (error) {
       console.error("Error submitting order:", error);
+      // Optionally handle error case here
     }
-  },
+  }
+,
   toggleDrawer: () => set((state) => ({ isDrawerOpen: !state.isDrawerOpen })),
 }));
 

@@ -1,34 +1,24 @@
-import { SetStateAction, useState } from 'react'
+import {SetStateAction, useEffect, useState} from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
     CircleArrowLeft,
-    CircleArrowRight,
+    CircleArrowRight, Edit, Edit2, EyeIcon,
     File,
     Home,
     LineChart,
-    ListFilter,
+    ListFilter, LucideDelete, LucideEdit3,
     MoreHorizontal,
     Package,
     Package2,
     PanelLeft,
-    PlusCircle,
     Search,
-    Settings,
-    ShoppingCart,
+    ShoppingCart, TrashIcon,
     Users2,
 } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -54,6 +44,9 @@ import {
     TabsList,
     TabsTrigger,
 } from '@/components/ui/tabs'
+import useAuth from "@/hook/auth";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import toast from "react-hot-toast";
 
 interface User {
     _id: string;
@@ -75,6 +68,7 @@ interface DataTableProps {
 
 export default function DataTable({ user }: DataTableProps) {
     const [currentPage, setCurrentPage] = useState(1)
+    const { deleteUser, success, error } = useAuth();
     const rowsPerPage = 5
 
     const totalPages = Math.ceil(user.length / rowsPerPage)
@@ -82,6 +76,22 @@ export default function DataTable({ user }: DataTableProps) {
     const handlePageChange = (newPage: SetStateAction<number>) => {
         setCurrentPage(newPage)
     }
+
+    useEffect(() => {
+        if (success) {
+            toast.success(success);
+        } else if (error) {
+            toast.error(error);
+        }
+    }, [success, error]);
+
+
+    const handleDelete = async (userId: string) => {
+        console.log('Hi : ', userId)
+        await deleteUser(userId);
+    };
+
+    // Component code
 
     const startIndex = (currentPage - 1) * rowsPerPage
     const endIndex = startIndex + rowsPerPage
@@ -131,22 +141,62 @@ export default function DataTable({ user }: DataTableProps) {
                             <TableCell>{user.orders.length}</TableCell>
                             <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                             <TableCell>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            className="h-8 w-8 p-0"
-                                        >
-                                            <MoreHorizontal className="h-4 w-4" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem>View</DropdownMenuItem>
-                                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                <TooltipProvider>
+                                <div className="flex space-x-2 cursor-pointer">
+
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 p-0"
+                                            >
+                                                <EyeIcon/>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <div className="flex flex-col">
+                                                <Button  size="sm"
+                                                        className="w-full text-left">View user details</Button>
+                                            </div>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 p-0"
+                                            >
+                                                <LucideEdit3 size={16}/>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <div className="flex flex-col">
+                                                <Button  size="sm"
+                                                        className="w-full text-left">update user</Button>
+                                            </div>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 p-0"
+                                                onClick={() => handleDelete(user._id)}
+                                            >
+                                                <TrashIcon size={16}/>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+
+                                                <Button  size="sm"
+                                                        className="w-full text-left" >Delete user</Button>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </div>
+                            </TooltipProvider>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -158,11 +208,12 @@ export default function DataTable({ user }: DataTableProps) {
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-                <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+                <header
+                    className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button size="icon" variant="outline" className="sm:hidden">
-                                <PanelLeft className="h-5 w-5" />
+                                <PanelLeft className="h-5 w-5"/>
                                 <span className="sr-only">Toggle Menu</span>
                             </Button>
                         </SheetTrigger>

@@ -19,14 +19,18 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import ProfileAvatar from "@/components/avatar";
 import CartDrawer from "@/components/page-ui/cart-drawer";
 import useAuthStore from "@/app/store/authenticate";
+import useUserStore from "@/app/store/profile";
 
 export const Navbar = () => {
   const { isAuthenticated } = useAuthStore();
+  const { user, fetchUser } = useUserStore();
   const router = useRouter();
-
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!isAuthenticated) {
+      if (!isAuthenticated || user === null) {
         router.push("/login"); // Redirect to login page if not authenticated
       }
     }, 1000); // Adjust the delay as needed

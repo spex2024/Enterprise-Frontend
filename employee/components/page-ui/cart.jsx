@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Trash2, ShoppingBasket, CircleX } from "lucide-react";
-
 import useCartStore from "../../app/store/cart";
 
 const Cart = () => {
@@ -12,28 +11,30 @@ const Cart = () => {
     checkout,
     isDrawerOpen,
     toggleDrawer,
+    isCheckoutSuccess,
   } = useCartStore();
 
+   console.log(isCheckoutSuccess);
   return isDrawerOpen ? (
-    <div className="fixed inset-0 z-50 flex ">
-      <div className="w-full max-w-md p-4 bg-white shadow-lg flex flex-col justify-between ">
+    <div className="fixed inset-0 z-50 flex">
+      <div className="w-full max-w-md p-4 bg-white shadow-lg flex flex-col justify-between">
         <div className="flex items-center justify-between pb-4 border-b">
           <h3 className="text-lg font-semibold flex items-center gap-2">
             <ShoppingBasket size={20} strokeWidth={1} /> Basket
           </h3>
           <button
-            className={`bg-black text-white rounded-full`}
+            className="bg-black text-white rounded-full"
             onClick={toggleDrawer}
           >
             <CircleX />
           </button>
         </div>
         {cart.length > 0 ? (
-          <ul className="space-y-4 h-full overflow-y-auto p-2 ">
+          <ul className="space-y-4 h-full overflow-y-auto p-2">
             {cart.map((item, index) => (
               <li key={index} className="flex justify-between items-center">
                 <div className="flex-1">
-                  <span className={"font-bold"}>
+                  <span className="font-bold">
                     {item.main} - GH₵{item.price.toFixed(2)}
                   </span>
                   <div className="text-xs text-gray-500 space-y-1">
@@ -61,13 +62,26 @@ const Cart = () => {
             Total Quantity: {totalQuantity}
           </p>
           <button
-            className="mt-4 px-4 py-2 bg-black text-white  "
+            className="mt-4 px-4 py-2 bg-black text-white"
             onClick={checkout}
           >
             Place Order
           </button>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {isCheckoutSuccess === true ?  (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-60">
+          <div className="bg-white p-4 rounded shadow-lg text-center">
+            <h2 className="text-green-500 font-semibold text-xl">Order Placed!</h2>
+            <p>Your order has been placed successfully.</p>
+            <button className="mt-4 px-4 py-2 bg-black text-white" onClick={toggleDrawer}>
+              View Your Orders
+            </button>
+          </div>
+        </div>
+      ): null}
     </div>
   ) : null;
 };
