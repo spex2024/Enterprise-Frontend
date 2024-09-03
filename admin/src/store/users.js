@@ -2,7 +2,8 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const baseurl = 'https://enterprise-backend.vercel.app';
+// const baseurl = 'https://enterprise-backend.vercel.app';
+const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 
 const useUserStore = create((set) => ({
     user: [],

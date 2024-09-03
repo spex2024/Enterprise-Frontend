@@ -3,7 +3,8 @@ import { create } from "zustand";
 import axios from "axios";
 
 // const baseURL = "http://localhost:8080";
-const baseurl = "https://enterprise-backend.vercel.app";
+// const baseurl = "https://enterprise-backend.vercel.app";
+const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 
 const useVendorStore = create((set) => ({
   vendors: [],
