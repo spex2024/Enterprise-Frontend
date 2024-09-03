@@ -7,7 +7,8 @@ import { z } from "zod";
 import { Input, Button } from "@nextui-org/react";
 import toast from "react-hot-toast";
 
-import useAuth from "../../app/hook/auth"; // Use only the components you need
+import useAuth from "../../app/hook/auth";
+import useUserStore from "../../app/store/profile"; // Use only the components you need
 
 // Define the Zod schema for validation
 const returnPackSchema = z.object({
@@ -28,6 +29,11 @@ export default function ReturnPackForm() {
     resolver: zodResolver(returnPackSchema),
   });
   const { returnPack, success, error } = useAuth();
+  const { user, fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   useEffect(() => {
     if (success) {
@@ -36,6 +42,7 @@ export default function ReturnPackForm() {
       toast.error(error);
     }
   }, [success, error]);
+
   // Handle form submission
   const onSubmit = async (data) => {
     try {
@@ -46,6 +53,9 @@ export default function ReturnPackForm() {
       console.error("Submission error:", error);
     }
   };
+
+  // Check if the pack status is pending or the success state is true
+  const isButtonDisabled = user?.pack?.status === "pending" || success;
 
   return (
     <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
@@ -65,6 +75,7 @@ export default function ReturnPackForm() {
         className="w-[70%] rounded-none bg-black mt-2"
         color="primary"
         type="submit"
+        isDisabled={isButtonDisabled} // Disable the button conditionally
       >
         Return Pack Request
       </Button>
