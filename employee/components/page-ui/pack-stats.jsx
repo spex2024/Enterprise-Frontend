@@ -8,6 +8,9 @@ const PackStats = () => {
     fetchUser();
   }, [fetchUser]);
 
+  const completeOrdersCount = user?.orders?.reduce((count, order) => {
+    return order.status.toLowerCase() === "completed" ? count + 1 : count;
+  }, 0) || 0;
 
 
   return (
@@ -22,7 +25,7 @@ const PackStats = () => {
 
           <div className="text-center">
             <h3 className="text-3xl sm:text-2xl lg:text-2xl font-semibold text-gray-800 dark:text-neutral-200">
-              {user?.orders.length}
+              {completeOrdersCount}
             </h3>
           </div>
         </div>

@@ -2,8 +2,8 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-// const baseurl = 'https://enterprise-backend.vercel.app';
-const baseurl = 'http://localhost:8080';
+const baseurl = 'https://enterprise-backend.vercel.app';
+// const baseurl = 'http://localhost:8080';
 const VendorContext = createContext();
 
 export const VendorProvider = ({ children }) => {

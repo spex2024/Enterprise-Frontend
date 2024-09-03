@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Trash2, ShoppingBasket, CircleX } from "lucide-react";
+
 import useCartStore from "../../app/store/cart";
 
 const Cart = () => {
@@ -14,7 +15,6 @@ const Cart = () => {
     isCheckoutSuccess,
   } = useCartStore();
 
-   console.log(isCheckoutSuccess);
   return isDrawerOpen ? (
     <div className="fixed inset-0 z-50 flex">
       <div className="w-full max-w-md p-4 bg-white shadow-lg flex flex-col justify-between">
@@ -34,9 +34,6 @@ const Cart = () => {
             {cart.map((item, index) => (
               <li key={index} className="flex justify-between items-center">
                 <div className="flex-1">
-                  <span className="font-bold">
-                    {item.main} - GH₵{item.price.toFixed(2)}
-                  </span>
                   <div className="text-xs text-gray-500 space-y-1">
                     <div>Option-One: {item.protein}</div>
                     <div>Option-Two: {item.sauce}</div>
@@ -71,17 +68,22 @@ const Cart = () => {
       </div>
 
       {/* Success Modal */}
-      {isCheckoutSuccess === true ?  (
+      {isCheckoutSuccess === true ? (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-60">
           <div className="bg-white p-4 rounded shadow-lg text-center">
-            <h2 className="text-green-500 font-semibold text-xl">Order Placed!</h2>
+            <h2 className="text-green-500 font-semibold text-xl">
+              Order Placed!
+            </h2>
             <p>Your order has been placed successfully.</p>
-            <button className="mt-4 px-4 py-2 bg-black text-white" onClick={toggleDrawer}>
+            <button
+              className="mt-4 px-4 py-2 bg-black text-white"
+              onClick={toggleDrawer}
+            >
               View Your Orders
             </button>
           </div>
         </div>
-      ): null}
+      ) : null}
     </div>
   ) : null;
 };
