@@ -21,7 +21,7 @@ const ReturnPack = () => {
   // Safely access the pack object
   const pack = user?.pack;
 
-
+console.log(pack)
 
   // Sort returnedPacks by createdAt date, with the latest first
   const sortedPacks = returnedPacks?.sort(
