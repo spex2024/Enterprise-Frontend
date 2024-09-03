@@ -6,7 +6,7 @@ import ReturnPack from "../../../components/page-ui/return-pack";
 const PackDashboard = () => {
   return (
     <div
-      className={`w-full min-h-screen flex  flex-col items-center justify-center bg-gray-200 px-32`}
+      className={`w-full min-h-screen flex  flex-col items-center justify-center bg-gray-200 lg:px-32`}
     >
       <PackStats />
       <ReturnPack />
