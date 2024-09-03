@@ -57,6 +57,8 @@ export default function ReturnPackForm() {
   // Check if the pack status is pending or the success state is true
   const isButtonDisabled = user?.pack?.status === "pending" || success;
 
+  console.log(user?.pack?.status)
+
   return (
     <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-4">
