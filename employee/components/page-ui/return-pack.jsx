@@ -29,8 +29,8 @@ const ReturnPack = () => {
   );
 
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-3 grid-rows-1 gap-6 px-10 py-10">
-      <div className="w-full col-span-2 h-auto bg-white place-items-center border-black py-20">
+    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-3  gap-6 lg:px-10 lg:py-10">
+      <div className="w-full lg:col-span-2 h-auto bg-white place-items-center border-black py-20">
         {pack?.status === "active" ? (
           <div className="w-full flex flex-col items-center justify-center px-5 py-5 gap-10">
             <div className="flex items-center justify-start px-5 py-5 gap-4 text-black text-sm">
@@ -49,7 +49,7 @@ const ReturnPack = () => {
           </div>
         )}
       </div>
-      <div className="w-full col-span-1 h-auto bg-white">
+      <div className="w-full lg:col-span-1 h-auto bg-white">
         <div className="flex items-center justify-start px-5 py-5 gap-4 text-black text-xl">
           <h1 className={`font-bold underline`}>Returned Pack History</h1>
         </div>
