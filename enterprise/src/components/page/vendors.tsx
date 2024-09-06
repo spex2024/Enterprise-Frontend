@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import {CircleArrowLeft, CircleArrowRight, File, ListFilter} from "lucide-react";
+import {CircleArrowLeft, CircleArrowRight, CircleMinusIcon, File, ListFilter, TrashIcon} from "lucide-react";
 import { format, isValid } from "date-fns";
 import { useState, useEffect } from "react";
 
@@ -39,6 +39,10 @@ import {
 } from "@/components/ui/tabs";
 import { useUserStore } from "@/store/profile";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import {AddVendor} from "@/components/page/add-vendor";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import useAuth from "@/hook/auth";
+import {toast} from "react-hot-toast";
 
 // Define types for user data
 interface User {
@@ -52,11 +56,13 @@ interface User {
     phone: string;
     isVerified: boolean;
     totalSales: number;
+    _id:string;
 }
 
 interface UserState {
     user: {
         vendors: User[]; // Sub-array of users
+        _id:string
     };
     loading: boolean;
     error: string | null;
@@ -66,6 +72,7 @@ interface UserState {
 export default function Vendors() {
     const { user, fetchUser } = useUserStore() as UserState;
     const { vendors } = user || {}; // Use default empty object if user is null
+    const { disConnectVendor, success, error } = useAuth();
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -74,6 +81,14 @@ export default function Vendors() {
     useEffect(() => {
         fetchUser();
     }, [fetchUser]);
+
+    useEffect(() => {
+        if (success) {
+            toast.success(success);
+        } else if (error) {
+            toast.error(error);
+        }
+    }, [success, error]);
 
     // Calculate paginated data
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -88,6 +103,13 @@ export default function Vendors() {
     // Total pages calculation
     const totalPages = Math.ceil((vendors?.length || 0) / itemsPerPage);
 
+    const handleDelete = async (userId: string , vendorId: string) => {
+        console.log(userId , vendorId)
+        await disConnectVendor(userId ,vendorId);
+    };
+
+    console.log(vendors)
+
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -100,9 +122,11 @@ export default function Vendors() {
                                 <TabsTrigger value="draft">Inactive</TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-2">
+                                <AddVendor/>
+
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-7 gap-1">
+                                        <Button variant="outline" size="sm" className="h-10 bg-black text-white px-3 flex items-center gap-2">
                                             <ListFilter className="h-3.5 w-3.5"/>
                                             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                                 Filter
@@ -118,7 +142,7 @@ export default function Vendors() {
 
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-                                <Button size="sm" variant="outline" className="h-7 gap-1">
+                                <Button size="sm" variant="outline" className="h-10 bg-black text-white px-3 flex items-center gap-2">
                                     <File className="h-3.5 w-3.5"/>
                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                         Export
@@ -152,6 +176,8 @@ export default function Vendors() {
                                                 </TableHead>
                                                 <TableHead className="hidden md:table-cell">
                                                     Created At
+                                                </TableHead><TableHead className="hidden md:table-cell">
+                                                    Action
                                                 </TableHead>
                                             </TableRow>
                                         </TableHeader>
@@ -189,9 +215,36 @@ export default function Vendors() {
                                                         <TableCell className="hidden md:table-cell">
                                                             {formattedDate}
                                                         </TableCell>
+                                                        <TableCell>
+                                                            <TooltipProvider>
+                                                                <div className="flex items-center space-x-2 cursor-pointer">
+
+
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger>
+                                                                            <Button
+                                                                                variant="ghost"
+                                                                                size="icon"
+                                                                                className="h-8 w-8 p-0"
+                                                                                onClick={() => handleDelete(user._id, userItem._id)}
+                                                                            >
+                                                                                <CircleMinusIcon size={16}/>
+                                                                            </Button>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent>
+
+                                                                           <p className={`text-xs`}>remove vendor</p>
+                                                                        </TooltipContent>
+                                                                    </Tooltip>
+                                                                </div>
+                                                            </TooltipProvider>
+                                                        </TableCell>
+
                                                     </TableRow>
                                                 );
                                             })}
+
+
                                         </TableBody>
                                     </Table>
                                 </CardContent>

@@ -34,6 +34,7 @@ import {
 import Header from '@/components/page/header';
 import { useUserStore } from '@/store/profile';
 import { useEffect } from 'react';
+import { AddVendor } from './add-vendor';
 
 interface Meal {
     mealId: string;
@@ -86,7 +87,6 @@ export default function Dashboard() {
     const { user, fetchUser } = useUserStore() as UserStore;
 
     useEffect(() => {
-
         fetchUser();
     }, [fetchUser]);
 
@@ -98,7 +98,7 @@ export default function Dashboard() {
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
 
-    const vendors = user?.vendors;
+    const vendors = user?.vendors || [];
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -122,7 +122,6 @@ export default function Dashboard() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{user?.users?.length}</div>
-                            <p className="text-xs text-muted-foreground"></p>
                         </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-2">
@@ -201,26 +200,38 @@ export default function Dashboard() {
                         </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-5">
-                        <CardHeader>
-                            <CardTitle>Vendors</CardTitle>
+                        <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-2">`}>
+                            <CardTitle>Vendor(s)</CardTitle>
+                            {vendors && vendors.length > 0 && (
+                                <div>
+                                    <AddVendor />
+                                </div>
+                            )}
                         </CardHeader>
                         <CardContent className="grid gap-8">
-                            {vendors?.map((vendor) => (
-                                <div className="flex items-center gap-4" key={vendor._id}>
-                                    <Avatar className="hidden h-12 w-13 sm:flex">
-                                        <AvatarImage src={vendor.imageUrl} alt="Avatar" />
-                                        <AvatarFallback>{vendor.code}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="grid gap-1">
-                                        <p className="text-sm font-medium leading-none">{vendor.name}</p>
-                                        <p className="text-sm text-muted-foreground">{vendor.location}</p>
-                                    </div>
-                                    <div className="ml-auto font-medium">
-                                        <p className="text-sm font-medium leading-none">GH₵ {vendor.totalSales}</p>
-                                        <p className="text-xs text-muted-foreground">Total Sales</p>
-                                    </div>
+                            {vendors?.length === 0 ? (
+                                <div className="flex flex-col items-center gap-4">
+                                    <p>Add more vendors</p>
+                                    <AddVendor />
                                 </div>
-                            ))}
+                            ) : (
+                                vendors.map((vendor) => (
+                                    <div className="flex items-center gap-4" key={vendor._id}>
+                                        <Avatar className="hidden h-12 w-13 sm:flex">
+                                            <AvatarImage src={vendor.imageUrl} alt="Avatar" />
+                                            <AvatarFallback>{vendor.code}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="grid gap-1">
+                                            <p className="text-sm font-medium leading-none">{vendor.name}</p>
+                                            <p className="text-sm text-muted-foreground">{vendor.location}</p>
+                                        </div>
+                                        <div className="ml-auto font-medium">
+                                            <p className="text-sm font-medium leading-none">GH₵ {vendor.totalSales}</p>
+                                            <p className="text-xs text-muted-foreground">Total Sales</p>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </CardContent>
                     </Card>
                 </div>

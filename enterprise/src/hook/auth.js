@@ -62,6 +62,24 @@ const useAuth = () => {
         }
     };
 
+    const addVendor = async (data) => {
+        setError(null);
+        console.log(data)
+        try {
+            const response = await axios.post(`${baseurl}/api/enterprise/add-vendor`, data ,{withCredentials: true });
+            console.log(response.data)
+            if (response.status===200) {
+                router.push('/login');
+                setSuccess(response.data.message);
+
+            } else {
+                setError(response.data.message);
+            }
+        } catch (error) {
+            setError(error.response.data.message);
+        }
+    };
+
     const resetRequest = async (user) => {
         setError(null);
         setSuccess(null);
@@ -109,6 +127,19 @@ const useAuth = () => {
             setError(err.response ? err.response.data.message : 'An error occurred');
         }
     }
+    const disConnectVendor = async (userId, vendorId) => {
+        try {
+            const response = await axios.post(`${baseurl}/api/enterprise/disconnect`, {userId , vendorId});
+            console.log(response);
+            setSuccess(response.data.message)
+            if (response.status===400){
+                setError(response.data.message);
+            }
+
+        } catch (err) {
+            setError(err.response ? err.response.data.message : 'An error occurred');
+        }
+    }
 
     return {
         login,
@@ -117,6 +148,8 @@ const useAuth = () => {
         resetRequest,
         resetPassword,
         resendVerification,
+        addVendor,
+        disConnectVendor,
         success,
         error,
     };

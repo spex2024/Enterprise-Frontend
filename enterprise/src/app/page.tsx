@@ -1,11 +1,14 @@
 'use client'
-import React, {useEffect} from 'react';
-import { useRouter } from 'next/navigation';
-import Dashboard from "@/components/page/dashboard";
-import useAuthStore from "@/store/authenticate";
-import { ScaleLoader } from "react-spinners";
 
-const App = () => {
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import useAuthStore from '@/store/authenticate';
+import { ScaleLoader } from 'react-spinners';
+import Dashboard from '@/components/page/dashboard';
+import NotificationModal from '@/components/page/notification';
+import useVendorStore from '@/store/vendors';
+
+const App: React.FC = () => {
     const { isAuthenticated } = useAuthStore();
     const router = useRouter();
 
@@ -19,7 +22,9 @@ const App = () => {
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }, [isAuthenticated, router]);
 
-    // Optionally, you can return a loading indicator while checking authentication
+
+
+
     if (!isAuthenticated) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -31,6 +36,7 @@ const App = () => {
     return (
         <div>
             <Dashboard />
+
         </div>
     );
 };

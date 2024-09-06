@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -28,6 +28,7 @@ interface User {
     company?: string;
     location?: string;
     code?: string;
+    token?: string; // Include token in the user type
 }
 
 // Define the type for useUserStore
@@ -36,13 +37,15 @@ interface UserStore {
     fetchUser: () => Promise<void>;
 }
 
+
+
 // Define the component with type checking
 const Header: React.FC = () => {
     const { logout, success, error } = useAuth();
     const router = useRouter();
-    const { isAuthenticated, isLoading, logout:clear } = useAuthStore();
+    const { isAuthenticated, isLoading, logout: clear } = useAuthStore();
     const { user, fetchUser } = useUserStore() as UserStore; // Casting to UserStore
-    const { company, imageUrl, location, code } = user ?? {};
+    const { company, imageUrl, location, code, token } = user ?? {};
 
     const [loading, setLoading] = useState(true);
 
@@ -59,14 +62,15 @@ const Header: React.FC = () => {
     }, [fetchUser]);
 
     useEffect(() => {
-        if (!isLoading && !isAuthenticated) {
+        if (!isAuthenticated) {
             router.push('/login'); // Redirect to login page if not authenticated
         }
-    }, [isAuthenticated, isLoading, router]);
+    }, [isAuthenticated, router]);
+
 
     const handleLogout = async () => {
         await logout();
-        clear()
+        clear();
         router.push('/login'); // Redirect to the login page after logout
     };
 
@@ -76,7 +80,7 @@ const Header: React.FC = () => {
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
             <nav className="hidden w-full flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
-                    <Package2 className="h-6 w-6"/>
+                    <Package2 className="h-6 w-6" />
                     <span className="sr-only">Acme Inc</span>
                 </Link>
                 <Link href="/" className="text-foreground transition-colors hover:text-foreground">
@@ -91,21 +95,21 @@ const Header: React.FC = () => {
                 <Link href={'/orders'} className="text-muted-foreground transition-colors hover:text-foreground">
                     Orders
                 </Link>
-                <Link href={'/cookie'} className="text-muted-foreground transition-colors hover:text-foreground">
+                <Link href={'/add-vendor'} className="text-muted-foreground transition-colors hover:text-foreground">
                     Analytics
                 </Link>
             </nav>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-                        <Menu className="h-5 w-5"/>
+                        <Menu className="h-5 w-5" />
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left">
                     <nav className="grid gap-6 text-lg font-medium">
                         <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                            <Package2 className="h-6 w-6"/>
+                            <Package2 className="h-6 w-6" />
                             <span className="sr-only">Acme Inc</span>
                         </Link>
                         <Link href="#" className="hover:text-foreground">
@@ -150,13 +154,13 @@ const Header: React.FC = () => {
                                 {company ?? 'No company'} ({code})
                             </p>
                             <p className={`w-full flex items-center gap-2 font-light`}>
-                                <MapPin size={12} strokeWidth={1}/> {location}
+                                <MapPin size={12} strokeWidth={1} /> {location}
                             </p>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator/>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem>Settings</DropdownMenuItem>
                         <DropdownMenuItem>Support</DropdownMenuItem>
-                        <DropdownMenuSeparator/>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
