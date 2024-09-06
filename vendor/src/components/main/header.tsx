@@ -17,13 +17,15 @@ import {
 import useAuth from "@/app/hook/auth";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
-import {useVendor} from "@/app/store/vendor";
+import Image from "next/image";
+
 import useAuthStore from "@/app/store/authenticate";
+import useVendorStore from "@/app/store/vendor";
 
 
 const Header = () => {
     const {logout , success,error} = useAuth()
-    const {vendor} =useVendor()
+    const {vendor,fetchVendor} =useVendorStore()
     const router = useRouter()
     const { isAuthenticated, isLoading, logout:clear } = useAuthStore();
     useEffect(() => {
@@ -33,7 +35,13 @@ const Header = () => {
             toast.error(error);
         }
     }, [success, error]);
+    useEffect(() => {
 
+        if (isAuthenticated) {
+            fetchVendor()
+        }
+
+    }, [isAuthenticated, fetchVendor]);
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
             router.push('/login'); // Redirect to login page if not authenticated
@@ -58,8 +66,7 @@ const Header = () => {
                     href="#"
                     className="flex items-center gap-2 text-lg font-semibold md:text-base"
                 >
-                    <Package2 className="h-6 w-6"/>
-                    <span className="sr-only">Acme Inc</span>
+                    <Image src={'https://res.cloudinary.com/ddwet1dzj/image/upload/v1722177650/spex_logo-03_png_dui5ur.png'} alt={'spex africa'} width={70} height={70}/>
                 </Link>
                 <Link
                     href={"/"}

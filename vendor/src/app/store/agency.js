@@ -1,40 +1,35 @@
-// contexts/UserContext.js
-'use client'
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import axios from 'axios';
 
-const UserContext = createContext();
+// const baseurl = 'http://localhost:8080';
+// const baseurl = 'https://enterprise-backend.vercel.app';
+const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    // const baseurl = 'http://localhost:8080';
-    // const baseurl = 'https://enterprise-backend.vercel.app';
-    const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+const useUserStore = create(
+    persist(
+        (set) => ({
+            user: null,
+            loading: true,
+            error: null,
+            fetchUser: async () => {
+                set({ loading: true });
+                try {
+                    const response = await axios.get(`${baseurl}/api/enterprise/agencies`, { withCredentials: true });
+                    set({ user: response.data, loading: false, error: null });
+                } catch (error) {
+                    set({
+                        error: error.response ? error.response.data.message : 'An error occurred',
+                        loading: false,
+                    });
+                }
+            },
+        }),
+        {
+            name: 'user-store', // Name to store in sessionStorage
+            getStorage: () => sessionStorage, // Persist in session storage
+        }
+    )
+);
 
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get(`${baseurl}/api/enterprise/agencies`, {withCredentials: true});
-                setUser(response.data);
-            } catch (error) {
-
-                setError(error.response ? error.response.data.message : 'An error occurred');
-            }
-        };
-
-        fetchUser();
-    }, []);
-
-    console.log(user);
-
-    return (
-        <UserContext.Provider value={{ user,  error }}>
-            {children}
-        </UserContext.Provider>
-    );
-};
-
-export const useUser = () => useContext(UserContext);
+export default useUserStore;

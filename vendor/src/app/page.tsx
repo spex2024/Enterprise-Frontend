@@ -8,16 +8,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Header from "@/components/main/header"
-import { useVendor } from "@/app/store/vendor"
 import useAuthStore from "@/app/store/authenticate";
-import {useEffect} from "react";
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {ScaleLoader} from "react-spinners";
+import useVendorStore from "@/app/store/vendor";
 
-// Define types for the vendor and its associated data
+// Define types for the meal, user, order, agency, and vendor
 interface Meal {
     main: string;
-   price : number
+    price: number;
 }
 
 interface User {
@@ -43,7 +43,7 @@ interface Agency {
     branch: string;
     imageUrl: string;
     users: {
-        orders: any[];
+        orders: Order[];
     }[];
 }
 
@@ -51,103 +51,108 @@ interface Vendor {
     orders?: Order[];
     meals?: Meal[];
     agencies?: Agency[];
-    totalSales:number;
-    completedOrders:number;
-    canceledOrders:number;
+    totalSales: number;
+    completedOrders: number;
+    canceledOrders: number;
 }
 
 export default function Dashboard() {
-    const { vendor } = useVendor() as { vendor: Vendor };
-    const { isAuthenticated } = useAuthStore();
+    const {vendor, fetchVendor} = useVendorStore();
+    const {isAuthenticated} = useAuthStore();
     const router = useRouter();
-    // const totalSales = vendor.orders?.reduce((total, order) => {
-    //     const orderTotal = order.meals.reduce((orderSum, meal) => orderSum + meal.price, 0);
-    //     return total + orderTotal;
-    // }, 0) || 0;
-    const agencies: Agency[] = vendor.agencies || [];
-    const { orders } = vendor;
-      console.log(vendor.orders)
-    // Sort orders by createdAt in descending order and limit to the top 5
-    const recentOrders = orders
-        ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    // Fetch vendor data if authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            fetchVendor();
+        }
+    }, [isAuthenticated, fetchVendor]);
+
+    // Sort and filter recent orders
+    const recentOrders = vendor.orders
+        ?.sort((a: { createdAt: string | number | Date }, b: {
+            createdAt: string | number | Date
+        }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
 
-
+    // Redirect to login page if not authenticated
     useEffect(() => {
         const timer = setTimeout(() => {
             if (!isAuthenticated) {
-                router.push('/login'); // Redirect to login page if not authenticated
+                router.push('/login');
             }
         }, 1000); // Adjust the delay as needed
 
-        return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+        return () => clearTimeout(timer);
     }, [isAuthenticated, router]);
 
-    // Optionally, you can return a loading indicator while checking authentication
+    // Display loading screen while checking authentication
     if (!isAuthenticated) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <ScaleLoader color={'#000'} />
+                <ScaleLoader color={'#000'}/>
             </div>
         );
     }
 
+    const agencies: Agency[] = vendor.agencies || [];
+
     return (
         <div className="flex min-h-screen w-full flex-col">
-            <Header />
+            <Header/>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
                 <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-                    <Card x-chunk="dashboard-01-chunk-0">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{vendor.orders?.length}</div>
+                            <div className="text-2xl font-bold">{vendor.orders?.length || 0}</div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-0">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Completed Orders</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{vendor.completedOrders}</div>
+                            <div className="text-2xl font-bold">{vendor.completedOrders || 0}</div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-0">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Cancelled Orders</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{vendor.canceledOrders}</div>
+                            <div className="text-2xl font-bold">{vendor.canceledOrders || 0}</div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-1">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Meals</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{vendor.meals?.length}</div>
+                            <div className="text-2xl font-bold">{vendor.meals?.length || 0}</div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-2">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Sales</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">GH₵{vendor.totalSales}</div>
+                            <div className="text-2xl font-bold">GH₵{vendor?.totalSales?.toFixed(2)}</div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-3">
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Agencies</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{vendor.agencies?.length}</div>
+                            <div className="text-2xl font-bold">{vendor.agencies?.length || 0}</div>
                         </CardContent>
                     </Card>
                 </div>
                 <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-                    <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
+                    <Card className="xl:col-span-2">
                         <CardHeader className="flex flex-row items-center">
                             <div className="grid gap-2">
                                 <CardTitle>Transactions</CardTitle>
@@ -156,7 +161,7 @@ export default function Dashboard() {
                             <Button asChild size="sm" className="ml-auto gap-1">
                                 <Link href={'/pages/orders'}>
                                     View All
-                                    <ArrowUpRight className="h-4 w-4" />
+                                    <ArrowUpRight className="h-4 w-4"/>
                                 </Link>
                             </Button>
                         </CardHeader>
@@ -172,7 +177,7 @@ export default function Dashboard() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {recentOrders?.map((order) => (
+                                    {recentOrders?.map((order: { orderId: Key | null | undefined; user: { firstName: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; lastName: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; agency: { company: any } }; meals: any[]; status: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; createdAt: string | number | Date; totalPrice: number }) => (
                                         <TableRow key={order.orderId}>
                                             <TableCell>
                                                 <div className="font-medium">
@@ -189,20 +194,20 @@ export default function Dashboard() {
                                             </TableCell>
                                             <TableCell>
                                                 <Badge className="text-xs" variant="outline">
-                                                    {order.status}
+                                                    {order?.status}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>
-                                                {new Date(order.createdAt).toLocaleDateString()}
+                                                {new Date(order?.createdAt).toLocaleDateString()}
                                             </TableCell>
-                                            <TableCell className="text-right">GH₵{order.totalPrice.toFixed(2)}</TableCell>
+                                            <TableCell className="text-right">GH₵{order?.totalPrice.toFixed(2)}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-5">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Agencies</CardTitle>
                         </CardHeader>
@@ -217,11 +222,11 @@ export default function Dashboard() {
                                         <p className="text-sm font-medium leading-none">{agency.company}</p>
                                         <p className="text-sm text-muted-foreground">{agency.branch}</p>
                                     </div>
-                                    <div className="ml-auto font-medium grid gap-1">
+                                    <div className="ml-auto font-medium grid grid-cols-1 g gap-1">
                                         <p className="text-md font-medium leading-none">
-                                            {agency.users.reduce((total, user) => total + user.orders.length, 0)}
+                                            {agency.users[0]?.orders?.length}
                                         </p>
-                                        <p className="text-xs text-muted-foreground">Total Orders</p>
+                                        <h2 className={`text-sm text-muted-foreground`}>Orders</h2>
                                     </div>
                                 </div>
                             ))}

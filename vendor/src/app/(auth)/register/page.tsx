@@ -5,7 +5,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
-import { useUser } from '../../store/agency';
 import useAuth from "@/app/hook/auth";
 import { toast } from "react-hot-toast";
 
@@ -30,7 +29,6 @@ const SignUp: React.FC = () => {
         resolver: zodResolver(schema),
     });
 
-    const { user } = useUser();
     const { addVendor, success, error } = useAuth();
 
     useEffect(() => {
@@ -62,8 +60,6 @@ const SignUp: React.FC = () => {
         try {
             await addVendor(formData);
             reset();
-            console.log(data);
-            console.log(user);
         } catch (error) {
             console.error('There was an error uploading the image:', error);
         }

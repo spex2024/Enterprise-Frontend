@@ -1,9 +1,9 @@
 'use client'
 import React, {useEffect} from 'react';
-import { useVendor } from "@/app/store/vendor";
 import AgencyAccordion from "@/components/main/agency-accordion";
 import useAuthStore from "@/app/store/authenticate";
 import {useRouter} from "next/navigation";
+import useVendorStore from "@/app/store/vendor";
 
 // Define the types for Agency and Vendor
 interface Agency {
@@ -19,10 +19,12 @@ interface Vendor {
 }
 
 const Orders: React.FC = () => {
-    const { vendor } = useVendor();
+    const { vendor ,fetchVendor} = useVendorStore()
     const agencies: Agency[] = vendor?.agencies || [];  // Default to an empty array if vendor is undefined
     const { isAuthenticated } = useAuthStore();
     const router = useRouter();
+
+
     useEffect(() => {
         const timer = setTimeout(() => {
             if (!isAuthenticated) {
@@ -31,7 +33,16 @@ const Orders: React.FC = () => {
         }, 1000); // Adjust the delay as needed
 
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+
     }, [isAuthenticated, router]);
+
+    useEffect(() => {
+
+            if (isAuthenticated) {
+                fetchVendor()
+            }
+
+    }, [isAuthenticated, fetchVendor]);
 
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {

@@ -43,10 +43,10 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs";
-import { useVendor } from "@/app/store/vendor";
 import MealDetail from "@/components/main/detail";
 import useAuthStore from "@/app/store/authenticate";
 import {useRouter} from "next/navigation";
+import useVendorStore from "@/app/store/vendor";
 
 type Meal = {
     _id: string;
@@ -79,7 +79,7 @@ type Vendor = {
 const ITEMS_PER_PAGE = 10;
 
 export default function Dashboard() {
-    const { vendor } = useVendor() as { vendor?: Vendor };
+    const { vendor,fetchVendor} = useVendorStore()
     const meals: Meal[] = vendor?.meals || [];
     const orders: Order[] = vendor?.orders || [];
     const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
@@ -95,6 +95,14 @@ export default function Dashboard() {
 
         return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }, [isAuthenticated, router]);
+
+    useEffect(() => {
+
+        if (isAuthenticated) {
+            fetchVendor()
+        }
+
+    }, [isAuthenticated, fetchVendor]);
 
     // Optionally, you can return a loading indicator while checking authentication
     if (!isAuthenticated) {

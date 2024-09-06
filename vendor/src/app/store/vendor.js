@@ -1,34 +1,20 @@
-'use client'
-
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { create } from 'zustand';
 import axios from 'axios';
+
 // const baseurl = 'https://enterprise-backend.vercel.app';
 // const baseurl = 'http://localhost:8080';
 const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-const VendorContext = createContext();
 
-export const VendorProvider = ({ children }) => {
-    const [vendor, setVendor] = useState([]);
+const useVendorStore = create((set) => ({
+    vendor: [],
+    fetchVendor: async () => {
+        try {
+            const response = await axios.get(`${baseurl}/api/vendor/vendor`, { withCredentials: true });
+            set({ vendor: response.data });
+        } catch (error) {
+            console.error('Error fetching vendor:', error);
+        }
+    }
+}));
 
-    useEffect(() => {
-        const fetchVendor = async () => {
-            try {
-                const response = await axios.get(`${baseurl}/api/vendor/vendor`,{withCredentials: true});
-                setVendor(response.data);
-                console.log(response.data)
-            } catch (error) {
-                console.error('Error fetching meals:', error);
-            }
-        };
-        fetchVendor();
-    }, []);
-
-
-    return (
-        <VendorContext.Provider value={{ vendor }}>
-            {children}
-        </VendorContext.Provider>
-    );
-};
-
-export const useVendor = () => useContext(VendorContext);
+export default useVendorStore;
