@@ -17,7 +17,7 @@ const Cart = () => {
 
   return isDrawerOpen ? (
     <div className="fixed inset-0 z-50 flex">
-      <div className="w-full max-w-md p-4 bg-white shadow-lg flex flex-col justify-between">
+      <div className="w-full max-w-md p-4 bg-white shadow-lg flex flex-col justify-between  dark:bg-neutral-900 dark:border-neutral-400 dark:text-white">
         <div className="flex items-center justify-between pb-4 border-b">
           <h3 className="text-lg font-semibold flex items-center gap-2">
             <ShoppingBasket size={20} strokeWidth={1} /> Basket
