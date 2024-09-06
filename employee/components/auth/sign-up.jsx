@@ -82,7 +82,7 @@ const SignUp = () => {
   const errorClass = "text-red-500";
 
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap  dark:bg-neutral-900 dark:border-neutral-400 dark:text-white ">
       <div className="flex w-full min-h-screen flex-col md:w-1/3">
         <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
           <Link

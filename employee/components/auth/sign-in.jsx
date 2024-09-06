@@ -44,7 +44,7 @@ const SignIn = () => {
   };
 
   const inputClass =
-    "w-full flex-1 appearance-none border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 text-sm focus:outline-none";
+    "w-full flex-1 appearance-none border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 text-sm focus:outline-none  dark:bg-neutral-900 dark:border-neutral-400 dark:text-white";
   const errorClass = "text-red-500";
 
   return (
