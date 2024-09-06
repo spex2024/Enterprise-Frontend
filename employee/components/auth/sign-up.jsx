@@ -78,15 +78,15 @@ const SignUp = () => {
   const profilePhoto = watch("profilePhoto");
 
   const inputClass =
-    "w-full flex-1 appearance-none border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 text-sm focus:outline-none";
+    "w-full flex-1 appearance-none border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 text-sm focus:outline-none  dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-400  ";
   const errorClass = "text-red-500";
 
   return (
-    <div className="flex flex-wrap  dark:bg-neutral-900 dark:border-neutral-400 dark:text-white ">
+    <div className="flex flex-wrap  dark:text-neutral-300 ">
       <div className="flex w-full min-h-screen flex-col md:w-1/3">
         <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
           <Link
-            className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900"
+            className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900 dark:text-neutral-300"
             href={"/"}
           >
             SPEX.
@@ -200,14 +200,14 @@ const SignUp = () => {
               </label>
             </div>
             <button
-              className="mt-8 w-[50%]  bg-gray-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition "
+              className="mt-8 w-[50%]  bg-gray-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md transition dark:bg-neutral-900 dark:border-neutral-400 dark:text-neutral-300"
               type="submit"
             >
               Sign Up
             </button>
           </form>
           <div className="mt-6 w-full flex items-start  justify-start">
-            <p className="whitespace-nowrap text-gray-600 flex gap-4 w-full items-center ">
+            <p className="whitespace-nowrap text-gray-600 flex gap-4 w-full items-center dark:text-neutral-300 ">
               Already have an account?
               <Link
                 className="underline-offset-4 font-semibold text-gray-900 underline"
