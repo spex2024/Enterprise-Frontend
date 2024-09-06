@@ -3,7 +3,7 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 // const baseurl = "https://enterprise-backend.vercel.app";
-const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+const baseurl = "https://enterprise-backend-l6pn.onrender.com";
 // const baseurl = "http://localhost:8080";
 
 const useCartStore = create(
@@ -22,11 +22,12 @@ const useCartStore = create(
               item.mealId === meal._id &&
               item.protein === options["protein"] &&
               item.sauce === options["sauce"] &&
-              item.extras === options["extras"]
+              item.extras === options["extras"],
           );
 
           if (itemIndex > -1) {
             const updatedCart = [...state.cart];
+
             updatedCart[itemIndex].quantity += 1;
 
             return {
@@ -88,7 +89,7 @@ const useCartStore = create(
               totalPrice,
               totalQuantity,
             },
-            { withCredentials: true }
+            { withCredentials: true },
           );
 
           if (response.status === 201) {
@@ -109,13 +110,14 @@ const useCartStore = create(
         }
       },
 
-      toggleDrawer: () => set((state) => ({ isDrawerOpen: !state.isDrawerOpen })),
+      toggleDrawer: () =>
+        set((state) => ({ isDrawerOpen: !state.isDrawerOpen })),
     }),
     {
       name: "cart-storage", // Name for the storage
       getStorage: () => sessionStorage, // Use sessionStorage for persistence
-    }
-  )
+    },
+  ),
 );
 
 export default useCartStore;

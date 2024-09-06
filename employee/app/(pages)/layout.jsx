@@ -10,7 +10,7 @@ export default function Layout({ children }) {
     <>
       <NextUIProvider>
         <Navbar />
-        <Cart/>
+        <Cart />
         <main>{children}</main>
       </NextUIProvider>
     </>

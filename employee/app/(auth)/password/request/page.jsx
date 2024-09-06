@@ -6,9 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link2 } from "lucide-react";
 import toast from "react-hot-toast";
+
 import useAuth from "../../../hook/auth";
-
-
 
 const emailSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -93,12 +92,24 @@ const Request = () => {
                   >
                     <Link2 size={20} /> send request
                   </button>
-                  <Link
-                    className="text-sm font-semibold text-white"
-                    href={"/login"}
+                  <div
+                    className={`flex justify-center items-center gap-2 text-black`}
                   >
-                    <p className="text-gray-900 leading-tight">back to login</p>
-                  </Link>
+                    <p>back to </p>
+                    <Link
+                      className="text-sm font-semibold text-white underline"
+                      href={"/login"}
+                    >
+                      <p className="text-gray-900 leading-tight underline"> login</p>
+                    </Link>
+                    <p>/</p>
+                    <Link
+                      className="text-sm font-semibold text-white underline"
+                      href={"/"}
+                    >
+                      <p className="text-gray-900 leading-tight underline"> home</p>
+                    </Link>
+                  </div>
                 </div>
               </form>
 

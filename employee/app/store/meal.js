@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import axios from "axios";
 // const baseurl = "https://enterprise-backend.vercel.app";
-const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+const baseurl = "https://enterprise-backend-l6pn.onrender.com";
 // const baseurl = "http://localhost:8080";
 const useMealStore = create((set) => ({
   meal: [],

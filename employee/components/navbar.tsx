@@ -19,7 +19,8 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import ProfileAvatar from "@/components/avatar";
 import CartDrawer from "@/components/page-ui/cart-drawer";
 import useAuthStore from "@/app/store/authenticate";
-import useUserStore from "@/app/store/profile";
+import Image from "next/image";
+import UserAvatar from "@/components/page-ui/profile";
 
 export const Navbar = () => {
   const { isAuthenticated } = useAuthStore();
@@ -39,11 +40,12 @@ export const Navbar = () => {
    if(!isAuthenticated) return  null
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="xl" position="sticky" className={`dark:bg-neutral-900 dark:border-neutral-800`}
+    >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <p className="font-bold text-inherit">ACME</p>
+            <Image src={'https://res.cloudinary.com/ddwet1dzj/image/upload/v1722177650/spex_logo-03_png_dui5ur.png'} alt={'spex africa'} width={70} height={70}/>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -64,28 +66,36 @@ export const Navbar = () => {
         </ul>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
-        justify="end"
-      >
-        <CartDrawer />
-        <ProfileAvatar />
-      </NavbarContent>
-
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
+      <NavbarContent
+        className=" sm:flex basis-1/5 sm:basis-full hidden lg:flex"
+        justify="end"
+      >
+        <ThemeSwitch />
+        <CartDrawer />
+        <ProfileAvatar />
+      </NavbarContent>
+      <NavbarContent
+        className=" sm:flex basis-1/5 sm:basis-full lg:hidden"
+        justify="end"
+      >
+        <CartDrawer />
+        <UserAvatar />
+      </NavbarContent>
+
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
+          {siteConfig.navItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
                 color={
                   index === 2
                     ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
+                    : index === siteConfig.navItems.length - 1
                       ? "danger"
                       : "foreground"
                 }

@@ -10,13 +10,12 @@ import {
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import useUserStore from "@/app/store/profile";
 import useAuth from "@/app/hook/auth";
 import useAuthStore from "@/app/store/authenticate";
 
-export default function ProfileAvatar() {
+export default function UserAvatar() {
   const { user, fetchUser } = useUserStore();
   const { logout, success, error } = useAuth();
   const { logout: clear } = useAuthStore();
@@ -62,24 +61,19 @@ export default function ProfileAvatar() {
               src: `${user?.imageUrl}`,
             }}
             className="sm:transition-transform "
-            description={user?.code}
-            name={`${user?.firstName} ${user?.lastName}`}
+            description={''}
+            name={``}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="User Actions" variant="flat">
-          <DropdownItem
-            key="profile"
-            className="h-16 gap-10 flex w-full bg-slate-800 text-white py-5"
-          >
-            <p className=" text-sm capitalize"> {user?.agency.company}</p>
+          <DropdownItem key="profile" className="h-16 gap-4 flex w-full bg-slate-800 text-white py-8">
+            <p className="text-xs font-semibold ">{`${user?.firstName} ${user?.lastName} (${user?.code})`}</p>
+            <p className=" text-xs capitalize"> {user?.agency.company}</p>
             <p className=" text-xs">{user?.email}</p>
           </DropdownItem>
           <DropdownItem key="user">Profile</DropdownItem>
           <DropdownItem key="orders">Orders</DropdownItem>
-
-          <DropdownItem key="settings">
-            <Link href={"/password/request"}>Reset Password</Link>
-          </DropdownItem>
+          <DropdownItem key="settings">Reset Password</DropdownItem>
 
           <DropdownItem key="logout" color="danger" onClick={handleLogout}>
             Log Out

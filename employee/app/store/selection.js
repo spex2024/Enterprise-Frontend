@@ -1,5 +1,5 @@
 // stores/selectedMealStore.js
-import create from "zustand";
+import {create} from "zustand";
 
 const useSelectedMealStore = create((set) => ({
   selectedMeal: null,

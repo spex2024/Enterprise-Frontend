@@ -29,11 +29,11 @@ console.log(pack)
   );
 
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-3  gap-6 lg:px-10 lg:py-10">
-      <div className="w-full lg:col-span-2 h-auto bg-white place-items-center border-black py-20">
+    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-3  gap-6 lg:px-10 lg:py-10  ">
+      <div className="w-full lg:col-span-2 h-auto bg-white place-items-center border-black py-20  dark:bg-neutral-900 dark:border-neutral-400 dark:text-white ">
         {pack?.status === "active" ? (
           <div className="w-full flex flex-col items-center justify-center px-5 py-5 gap-10">
-            <div className="flex items-center justify-start px-5 py-5 gap-4 text-black text-sm">
+            <div className="flex items-center justify-start px-5 py-5 gap-4 text-black dark:text-white text-sm">
               <span className={`h-2 w-2 rounded-full bg-green-500`} />
               <h1>{pack?.status}</h1>
               <h1>{pack?.userCode}</h1>
@@ -43,14 +43,14 @@ console.log(pack)
           </div>
         ) : (
           <div className="w-full flex flex-col items-center justify-center px-5 py-5 gap-10">
-            <div className="flex items-center justify-start px-5 py-5 gap-4 text-black text-lg">
+            <div className="flex items-center justify-start px-5 py-5 gap-4 text-black dark:text-white text-lg">
               <h1>0 active pack(s) found</h1>
             </div>
           </div>
         )}
       </div>
-      <div className="w-full lg:col-span-1 h-auto bg-white">
-        <div className="flex items-center justify-start px-5 py-5 gap-4 text-black text-xl">
+      <div className="w-full lg:col-span-1 h-auto bg-white  dark:bg-neutral-900 dark:border-neutral-800">
+        <div className="flex items-center justify-start px-5 py-5 gap-4 text-black dark:text-white text-xl">
           <h1 className={`font-bold underline`}>Returned Pack History</h1>
         </div>
         {sortedPacks?.map((item) => (

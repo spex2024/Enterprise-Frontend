@@ -95,12 +95,24 @@ const Reset = () => {
                   >
                     <KeySquare size={20} /> reset password
                   </button>
-                  <Link
-                    className="text-sm font-semibold text-white"
-                    href={"/login"}
+                  <div
+                    className={`flex justify-center items-center gap-2 text-black`}
                   >
-                    <p className="text-gray-900 leading-tight">back to login</p>
-                  </Link>
+                    <p>back to </p>
+                    <Link
+                      className="text-sm font-semibold text-white underline"
+                      href={"/login"}
+                    >
+                      <p className="text-gray-900 leading-tight underline"> login</p>
+                    </Link>
+                    <p>/</p>
+                    <Link
+                      className="text-sm font-semibold text-white underline"
+                      href={"/"}
+                    >
+                      <p className="text-gray-900 leading-tight underline"> home</p>
+                    </Link>
+                  </div>
                 </div>
               </form>
 
@@ -120,7 +132,7 @@ const Reset = () => {
           className="hidden bg-cover lg:block lg:w-2/3"
           style={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
+              "url(https://images.unsplash.com/photo-1616763355603-9755a640a287?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)"
           }}
         >
           <div className="w-full flex flex-row-reverse items-center h-full px-20 bg-gray-900 bg-opacity-40">
