@@ -80,8 +80,7 @@ const Header: React.FC = () => {
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
             <nav className="hidden w-full flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
-                    <Package2 className="h-6 w-6" />
-                    <span className="sr-only">Acme Inc</span>
+                    <Image src={'https://res.cloudinary.com/ddwet1dzj/image/upload/v1722177650/spex_logo-03_png_dui5ur.png'} alt={'spex africa'} width={70} height={70}/>
                 </Link>
                 <Link href="/" className="text-foreground transition-colors hover:text-foreground">
                     Dashboard

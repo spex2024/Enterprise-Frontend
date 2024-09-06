@@ -79,7 +79,9 @@ interface User {
     packs?:number;
     emissionSaved?:number;
     points?:number;
-    issued?:number;
+    issuedPack?:number;
+    returnedPack?:number;
+    moneyBalance?:number;
 }
 
 interface UserStore {
@@ -104,6 +106,8 @@ export default function Dashboard() {
 
     const vendors = user?.vendors || [];
 
+    const remaining = (user?.packs ?? 0) - (user?.issuedPack ?? 0)
+
     return (
         <div className="flex min-h-screen w-full flex-col">
             <Header />
@@ -122,7 +126,6 @@ export default function Dashboard() {
                     <Card x-chunk="dashboard-01-chunk-1">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{user?.users?.length}</div>
@@ -130,45 +133,66 @@ export default function Dashboard() {
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-2">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Emission Saved</CardTitle>
-                            <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{user?.emissionSaved}</div>
-                        </CardContent>
-                    </Card>
-                    <Card x-chunk="dashboard-01-chunk-3">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Packs</CardTitle>
-                            <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="w-full flex flex-col items-center justify-between text-2xl font-bold">
-                               <p>{user?.packs}</p>
-                                <div className={`flex items-center gap-10`}>
-                                    <span>Pack(s) Issued: {user?.issued}</span>
-                                    <span>|</span>
-                                    <span>Pack(s) Remaining: {user?.issued} - {user?.users?.length} </span>
+                            <div className="w-full flex   justify-between gap-3 text-2xl ">
+                               <p className={`font-bold`}>{user?.packs}</p>
+                                <div className={`w-full flex  justify-end mt-2 gap-2 text-xs `}>
+                                    <p className={`w-[80%] flex flex-col items-end
+                                     text:muted`}>
+                                        <span>Issued</span>
+                                        <span> {user?.issuedPack}</span>
+                                    </p>
+                                     <p className={'h-8  border border-gray-500 '}></p>
+                                    <p className={`w-[50%] flex flex-col  text:muted`}>
+                                        <span> Remaining</span>
+                                        <span> {remaining} </span></p>
+
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-4">
+                    <Card x-chunk="dashboard-01-chunk-3">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Packs</CardTitle>
-                            <Activity className="h-4 w-4 text-muted-foreground" />
+                            <CardTitle className="text-sm font-medium">Active Packs</CardTitle>
+
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{user?.packs}</div>
                         </CardContent>
                     </Card>
+                    <Card x-chunk="dashboard-01-chunk-4">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Returned Packs</CardTitle>
+
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{user?.returnedPack}</div>
+                        </CardContent>
+                    </Card>
                     <Card x-chunk="dashboard-01-chunk-5">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Emission Saved</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{user?.emissionSaved}</div>
+                        </CardContent>
+                    </Card>
+                    <Card x-chunk="dashboard-01-chunk-6">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium"> Carbon Points</CardTitle>
-                            <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{user?.points}</div>
+                        </CardContent>
+                    </Card>
+                    <Card x-chunk="dashboard-01-chunk-7">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium"> Revenue</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{user?.moneyBalance}</div>
                         </CardContent>
                     </Card>
 
