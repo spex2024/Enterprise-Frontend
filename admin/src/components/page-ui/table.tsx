@@ -87,7 +87,6 @@ export default function DataTable({ user }: DataTableProps) {
 
 
     const handleDelete = async (userId: string) => {
-        console.log('Hi : ', userId)
         await deleteUser(userId);
     };
 
