@@ -64,12 +64,10 @@ const useAuth = () => {
 
     const addVendor = async (data) => {
         setError(null);
-        console.log(data)
         try {
             const response = await axios.post(`${baseurl}/api/enterprise/add-vendor`, data ,{withCredentials: true });
             console.log(response.data)
             if (response.status===200) {
-                router.push('/login');
                 setSuccess(response.data.message);
 
             } else {
