@@ -5,7 +5,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
-import Select from 'react-select';
 import { useUser } from '../../store/agency';
 import useAuth from "@/app/hook/auth";
 import { toast } from "react-hot-toast";
@@ -18,7 +17,6 @@ const schema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters long').nonempty('Password is required'),
     confirmPassword: z.string().min(8, 'Password must be at least 8 characters long').nonempty('Confirm Password is required'),
     owner: z.string().nonempty('Owner name is required'),
-    agencies: z.array(z.string()).min(1, 'At least one agency must be selected'),
     profilePhoto: z.any().refine((file) => file && file.length > 0, 'Profile photo is required'),
 }).refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
@@ -44,10 +42,7 @@ const SignUp: React.FC = () => {
     }, [success, error]);
 
     // Map user data to options for the Select component
-    const agencyOptions = user?.map((agency: { _id: any; company: any; branch: any; }) => ({
-        value: agency._id,
-        label: `${agency.company} (${agency.branch})`,
-    })) || [];
+
 
     const onSubmit: SubmitHandler<SignUpFormInputs> = async (data) => {
         const formData = new FormData();
@@ -58,7 +53,6 @@ const SignUp: React.FC = () => {
         formData.append('password', data.password);
         formData.append('confirmPassword', data.confirmPassword);
         formData.append('owner', data.owner);
-        data.agencies.forEach(agency => formData.append('agencies', agency));
         if (data.profilePhoto && data.profilePhoto[0]) {
             formData.append('profilePhoto', data.profilePhoto[0]);
         } else {
@@ -76,7 +70,7 @@ const SignUp: React.FC = () => {
     };
 
     const profilePhoto = watch('profilePhoto');
-    const selectedAgencies = watch('agencies');
+
 
     const inputClass = 'w-full flex-1 appearance-none border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 text-sm focus:outline-none';
     const errorClass = 'text-red-500';
@@ -113,16 +107,6 @@ const SignUp: React.FC = () => {
                         <div className="flex flex-col pt-4">
                             <input type="text" {...register('owner')} className={inputClass} placeholder="Owner" />
                             {errors.owner && <p className={errorClass}>{errors.owner.message}</p>}
-                        </div>
-                        <div className="flex flex-col pt-4">
-                            <Select
-                                options={agencyOptions}
-                                isMulti
-                                onChange={(selectedOptions) => setValue('agencies', selectedOptions.map(option => option.value))}
-                                value={agencyOptions.filter((option: { value: string; }) => selectedAgencies?.includes(option.value))}
-                                placeholder="Select agencies"
-                            />
-                            {errors.agencies && <p className={errorClass}>{errors.agencies.message}</p>}
                         </div>
                         <div className="flex items-center space-x-6 pt-4">
                             <div className="shrink-0">
