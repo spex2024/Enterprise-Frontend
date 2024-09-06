@@ -76,6 +76,10 @@ interface User {
     orders?: Order[];
     vendors?: Vendor[];
     users?: UserSub[];
+    packs?:number;
+    emissionSaved?:number;
+    points?:number;
+    issued?:number;
 }
 
 interface UserStore {
@@ -130,18 +134,44 @@ export default function Dashboard() {
                             <CreditCard className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+12</div>
+                            <div className="text-2xl font-bold">{user?.emissionSaved}</div>
                         </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-3">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Carbon Points</CardTitle>
+                            <CardTitle className="text-sm font-medium">Total Packs</CardTitle>
                             <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+573</div>
+                            <div className="w-full flex flex-col items-center justify-between text-2xl font-bold">
+                               <p>{user?.packs}</p>
+                                <div className={`flex items-center gap-10`}>
+                                    <span>Pack(s) Issued: {user?.issued}</span>
+                                    <span>|</span>
+                                    <span>Pack(s) Remaining: {user?.issued} - {user?.users?.length} </span>
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
+                    <Card x-chunk="dashboard-01-chunk-4">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Packs</CardTitle>
+                            <Activity className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{user?.packs}</div>
+                        </CardContent>
+                    </Card>
+                    <Card x-chunk="dashboard-01-chunk-5">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium"> Carbon Points</CardTitle>
+                            <Activity className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{user?.points}</div>
+                        </CardContent>
+                    </Card>
+
                 </div>
                 <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
                     <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
