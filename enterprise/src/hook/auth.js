@@ -12,20 +12,20 @@ const useAuth = () => {
     const { setIsAuthenticated ,logout: clearAuth} = useAuthStore()
     const {  fetchUser } = useUserStore()
     // const baseurl = 'https://enterprise-backend.vercel.app';
-    const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
-    // const baseurl = 'http://localhost:8080';
+    // const baseurl = 'https://enterprise-backend-l6pn.onrender.com';
+    const baseurl = 'http://localhost:8080';
 
     const login = async (data) => {
         setError(null);
         try {
             const response = await axios.post(`${baseurl}/api/enterprise/login`, data, { withCredentials: true });
             if (response.status===200) {
-                setSuccess(response.data.message);
+                setSuccess(response?.data?.message);
                 setIsAuthenticated(true)
                 router.push('/')
             }
         } catch (error) {
-            setError(error.response.data.message);
+            setError(error.response?.data?.message);
         }
     };
 
@@ -127,7 +127,7 @@ const useAuth = () => {
     }
     const disConnectVendor = async (userId, vendorId) => {
         try {
-            const response = await axios.post(`${baseurl}/api/enterprise/disconnect`, {userId , vendorId});
+            const response = await axios.post(`${baseurl}/api/enterprise/vendor/disconnect`, {userId , vendorId});
             console.log(response);
             setSuccess(response.data.message)
             if (response.status===400){
@@ -136,6 +136,19 @@ const useAuth = () => {
 
         } catch (err) {
             setError(err.response ? err.response.data.message : 'An error occurred');
+        }
+    }
+    const disConnectUser = async (entId, userId) => {
+        try {
+            const response = await axios.post(`${baseurl}/api/enterprise/employee/disconnect`, {userId , entId});
+            console.log(response);
+            setSuccess(response.data.message)
+            if (response.status===400){
+                setError(response.data.message);
+            }
+
+        } catch (err) {
+            setError(err.response ? err.response.data.message : err.message);
         }
     }
 
@@ -148,6 +161,7 @@ const useAuth = () => {
         resendVerification,
         addVendor,
         disConnectVendor,
+        disConnectUser,
         success,
         error,
     };

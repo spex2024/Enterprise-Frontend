@@ -1,5 +1,5 @@
 // stores/vendorStore.js
-import create from 'zustand';
+import {create} from 'zustand';
 import axios from 'axios';
 
 // const baseurl = 'https://enterprise-backend.vercel.app';
@@ -15,7 +15,7 @@ const useVendorStore = create((set) => ({
         set({ loading: true, error: null });
         try {
             const response = await axios.get(`${baseurl}/api/admin/vendors`, { withCredentials: true });
-            set({ vendors: response.data, loading: false });
+            set({ vendors: response?.data, loading: false });
         } catch (error) {
             set({ error: error.message, loading: false });
         }

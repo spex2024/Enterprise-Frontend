@@ -61,11 +61,11 @@ const Header: React.FC = () => {
         fetchUser().finally(() => setLoading(false));
     }, [fetchUser]);
 
-    useEffect(() => {
-        if (!isAuthenticated) {
-            router.push('/login'); // Redirect to login page if not authenticated
-        }
-    }, [isAuthenticated, router]);
+    // useEffect(() => {
+    //     if (!isAuthenticated) {
+    //         router.push('/login'); // Redirect to login page if not authenticated
+    //     }
+    // }, [isAuthenticated, router]);
 
 
     const handleLogout = async () => {

@@ -6,6 +6,8 @@ import { ScaleLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
 
 import useAuthStore from "../../store/authenticate";
+import UpdateProfile from "../../../components/page-ui/user-info";
+import UserProfile from "../../../components/page-ui/user-profile";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -112,10 +114,12 @@ export default function App() {
           </Link>
         </li>
       </ul>
-      <div className="p-4 rounded-lg bg-gray-50  w-full h-auto">
+      <div className="p-4 rounded-lg   w-full h-auto">
         {activeTab === "profile" && (
-          <div className="p-4 rounded-lg w-[60vw]">
-            <h1 className="text-2xl font-semibold mb-4">Your Profile</h1>
+          <div className=" rounded-lg w-[60vw]  flex flex-col justify-center items-center">
+            <UserProfile/>
+
+            <UpdateProfile/>
           </div>
         )}
         {activeTab === "dashboard" && (

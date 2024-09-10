@@ -108,7 +108,7 @@ export default function Vendors() {
         await disConnectVendor(userId ,vendorId);
     };
 
-    console.log(vendors)
+
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">

@@ -55,7 +55,6 @@ const useAuth = () => {
     try {
       const response = await axios.post(`${baseurl}/api/user/register`, user);
 
-      console.log(response);
       if (response.status === 200) {
         setSuccess(response.data.message);
         router.push("/login");
@@ -82,6 +81,7 @@ const useAuth = () => {
       setError(error.response.data.message);
     }
   };
+
   const returnPack = async (code) => {
     setError(null);
     setSuccess(null);
@@ -134,6 +134,29 @@ const useAuth = () => {
     }
   };
 
+  // New function for updating the user profile
+  const updateProfile = async (userId, userData) => {
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await axios.put(
+        `${baseurl}/api/user/employee/${userId}`,
+        userData,
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+      } else {
+        setError(response.data.message);
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
   return {
     login,
     logout,
@@ -142,6 +165,7 @@ const useAuth = () => {
     resetPassword,
     resendVerification,
     returnPack,
+    updateProfile, // include the new function in the returned object
     success,
     error,
   };

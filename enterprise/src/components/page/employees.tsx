@@ -3,7 +3,7 @@
 import Image from "next/image";
 import {
     CircleArrowLeft,
-    CircleArrowRight,
+    CircleArrowRight, CircleMinusIcon,
     File,
     ListFilter,
 } from "lucide-react";
@@ -44,6 +44,9 @@ import {
 import { useUserStore } from "@/store/profile";
 import { useEffect, useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import useAuth from "@/hook/auth";
+import {toast} from "react-hot-toast";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 // Define types for user data
 interface User {
@@ -56,11 +59,16 @@ interface User {
     createdAt: string; // Assuming ISO date string
     phone: string;
     isVerified: boolean;
+    _id:string;
+
+
 }
 
 interface UserState {
-    user: {
-        users: User[]; // Sub-array of users
+    user?: {
+        users?: User[];
+        _id?:string
+        // Sub-array of users
     } | null; // Handle possible null value
     loading: boolean;
     error: string | null;
@@ -69,11 +77,18 @@ interface UserState {
 
 export default function EmployeeData() {
     const { user, fetchUser } = useUserStore() as UserState;
-
+    const { disConnectUser, success, error } = useAuth();
     useEffect(() => {
         fetchUser();
     }, [fetchUser]);
 
+    useEffect(() => {
+        if (success) {
+            toast.success(success);
+        } else if (error) {
+            toast.error(error);
+        }
+    }, [success, error]);
     // Handle case where user might be null
     const users = user?.users || [];
 
@@ -89,6 +104,12 @@ export default function EmployeeData() {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+
+    const handleDelete = async (entId: string , userId: string) => {
+        console.log(entId , userId)
+        await disConnectUser(entId ,userId);
+    };
+
 
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -143,19 +164,22 @@ export default function EmployeeData() {
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
-                                                <TableHead className="hidden w-[100px] sm:table-cell">
-                                                    <span className="sr-only">Image</span>
+                                                <TableHead>
+                                                    <span>Image</span>
                                                 </TableHead>
                                                 <TableHead>Name</TableHead>
                                                 <TableHead>Email</TableHead>
                                                 <TableHead>Phone</TableHead>
                                                 <TableHead>Points</TableHead>
                                                 <TableHead>Code</TableHead>
-                                                <TableHead className="hidden md:table-cell">
+                                                <TableHead>
                                                     Status
                                                 </TableHead>
-                                                <TableHead className="hidden md:table-cell">
+                                                <TableHead >
                                                     Created At
+                                                </TableHead>
+                                                <TableHead>
+                                                    Action
                                                 </TableHead>
                                             </TableRow>
                                         </TableHeader>
@@ -185,6 +209,30 @@ export default function EmployeeData() {
                                                     </TableCell>
                                                     <TableCell className="hidden md:table-cell">
                                                         {format(new Date(userItem.createdAt), 'MMM d, yyyy')}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <TooltipProvider>
+                                                            <div className="flex items-center space-x-2 cursor-pointer">
+
+
+                                                                <Tooltip>
+                                                                    <TooltipTrigger>
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="icon"
+                                                                            className="h-8 w-8 p-0"
+                                                                            onClick={() => handleDelete(user?._id as string, userItem._id)}
+                                                                        >
+                                                                            <CircleMinusIcon size={16}/>
+                                                                        </Button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+
+                                                                        <p className={`text-xs`}>remove vendor</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </div>
+                                                        </TooltipProvider>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
