@@ -56,6 +56,20 @@ const useAuth = () => {
             setError(error.response.data.message);
         }
     };
+    const addVendor = async (vendor) => {
+        setError(null);
+        try {
+            const response = await axios.post(`${baseurl}/api/vendor/add-vendor`, vendor);
+            if (response.status === 200) {
+                setSuccess(response.data.message);
+                router.push('/vendors');
+            } else {
+                setError(response.data.message);
+            }
+        } catch (error) {
+            setError(error.response.data.message);
+        }
+    };
 
     const handlePackRequest = async ({ id, action }) => {
         setError(null);
@@ -158,18 +172,53 @@ const useAuth = () => {
             setError(error.response.data.message);
         }
     };
+const deleteVendor = async (vendorId) => {
+        setError(null);
+        try {
+            const response = await axios.delete(`${baseurl}/api/vendor/${vendorId}`, { withCredentials: true });
+            if (response.status === 200) {
+                setSuccess(response?.data?.message);
+                // Optionally redirect or perform additional actions
+            } else {
+                setError(response?.data?.message);
+            }
+        } catch (error) {
+            setError(error.response?.data?.message);
+        }
+    };const updateVendor = async (vendorId , userData) => {
+        console.log(userData,vendorId)
+        setError(null);
+        try {
+            const response = await axios.put(`${baseurl}/api/vendor/update/${vendorId}`, userData,{ headers: {
+                    'Content-Type': 'multipart/form-data',
+                },});
+
+            if (response.status === 200) {
+                router.push('/vendors');
+                setSuccess(response?.data?.message);
+                // Optionally redirect or perform additional actions
+            } else {
+                setError(response?.data?.message);
+            }
+        } catch (error) {
+            setError(error.response?.data?.message);
+        }
+    };
 
     return {
         login,
         logout,
         addUser,
+        addVendor,
         resetRequest,
         resetPassword,
         resendVerification,
         handlePackRequest,
         completeOrder,
         cancelOrder,
-        deleteUser, // Export the new function
+        deleteUser,
+        deleteVendor,
+        updateVendor,
         success,
         error,
     };
