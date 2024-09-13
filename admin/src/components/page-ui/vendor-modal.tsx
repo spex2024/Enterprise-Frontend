@@ -79,7 +79,7 @@ export default function VendorDetailsModal({ isOpen, onClose, vendor }: VendorDe
                         <p><strong>Code:</strong> {vendor.code}</p>
                         <p><strong>Owner:</strong> {vendor.owner}</p>
                         <p><strong>Agencies:</strong> {vendor.agencies.map(agency => agency.company).join(', ')}</p>
-                        <p><strong>Total Sales:</strong> ${calculateTotalSales(vendor.orders).toFixed(2)}</p>
+                        <p><strong>Total Sales:</strong> GH₵{calculateTotalSales(vendor.orders).toFixed(2)}</p>
                         <p><strong>Total Orders:</strong> {vendor.orders.length}</p>
                     </div>
                 </div>
