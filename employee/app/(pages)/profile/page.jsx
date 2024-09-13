@@ -117,9 +117,8 @@ export default function App() {
       <div className="p-4 rounded-lg   w-full h-auto">
         {activeTab === "profile" && (
           <div className=" rounded-lg w-[60vw]  flex flex-col justify-center items-center">
-            <UserProfile/>
-
-            <UpdateProfile/>
+            <UserProfile />
+            <UpdateProfile />
           </div>
         )}
         {activeTab === "dashboard" && (
